@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Layout.master.cs" Inherits="InscricaoCongresso.View.Layout" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="nova.Master.cs" Inherits="InscricaoCongresso.View.nova" %>
 
 <!DOCTYPE html>
 

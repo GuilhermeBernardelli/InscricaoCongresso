@@ -94,11 +94,14 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Image\BoletoBase.png" />
+    <Content Include="Image\Santander.png" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="View\Layout.Master" />
+    <Content Include="View\Boleto.aspx" />
+    <Content Include="View\nova.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -113,17 +116,23 @@
     <Content Include="Image\p_f.gif" />
     <Content Include="Image\p.gif" />
     <Content Include="View\Principal.aspx" />
-    <Content Include="View\WebForm2.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\Layout.Master.cs">
-      <DependentUpon>Layout.Master</DependentUpon>
+    <Compile Include="View\Boleto.aspx.cs">
+      <DependentUpon>Boleto.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="View\Layout.Master.designer.cs">
-      <DependentUpon>Layout.Master</DependentUpon>
+    <Compile Include="View\Boleto.aspx.designer.cs">
+      <DependentUpon>Boleto.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\nova.Master.cs">
+      <DependentUpon>nova.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\nova.Master.designer.cs">
+      <DependentUpon>nova.Master</DependentUpon>
     </Compile>
     <Compile Include="View\Principal.aspx.cs">
       <DependentUpon>Principal.aspx</DependentUpon>
@@ -131,13 +140,6 @@
     </Compile>
     <Compile Include="View\Principal.aspx.designer.cs">
       <DependentUpon>Principal.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="View\WebForm2.aspx.cs">
-      <DependentUpon>WebForm2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="View\WebForm2.aspx.designer.cs">
-      <DependentUpon>WebForm2.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
