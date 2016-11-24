@@ -12,8 +12,8 @@ namespace InscricaoCongresso.View
         string numeroBoleto;
         protected void Page_Load(object sender, EventArgs e)
         {
-            numeroBoleto = Session["boleto"].ToString();
-            functionCodeBar(numeroBoleto);
+            //numeroBoleto = Session["boleto"].ToString();
+            //functionCodeBar(numeroBoleto);
         }
         public void functionCodeBar(string numero)
         {

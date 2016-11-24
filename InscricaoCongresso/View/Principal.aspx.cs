@@ -11,13 +11,17 @@ namespace InscricaoCongresso.View
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
         }
+
+        /*
         protected void btnGerar_Click(object sender, EventArgs e)
         {
+            
             //chama a renderização do código de barras a partir da string, exclusivamente numérica, passada como parametro
             Session["boleto"] = TextBox1.Text;
             Response.Redirect("boleto.aspx");
-        }
+            
+        }*/
     }
 }

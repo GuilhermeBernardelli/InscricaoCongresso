@@ -5,17 +5,15 @@
             width: 10px;
             height: 60px;
         }
-        .auto-style2 {
-            width: 3px;
-            height: 60px;
-        }
-    </style>
+        </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:Panel ID="Panel1" runat="server" Height="232px">
-        <asp:TextBox ID="TextBox1" runat="server" Width="491px"></asp:TextBox>
-        <asp:Button ID="btnGerar" runat="server" Text="Gerar" Width="134px" OnClick="btnGerar_Click" />
-        <asp:Panel ID="pnlCodeBar" runat="server" Height="60px">
+    <asp:Panel ID="Panel1" runat="server" Height="105px" Width="744px">
+        <asp:Label ID="lblTitulo" runat="server" Text="REALIZAR INSCRIÇÃO E GERAR BOLETO" Font-Bold="True" Font-Names="Arial" Font-Size="XX-Large" Width="100%"></asp:Label>
+        <asp:Panel ID="Panel3" runat="server" Height="24px">
         </asp:Panel>
     </asp:Panel>
+<asp:Panel ID="Panel2" runat="server" Height="47px" Width="746px">
+    <asp:Button ID="btnGerar" runat="server" Text="Gerar Boleto" Width="134px" />
+</asp:Panel>
 </asp:Content>
