@@ -94,13 +94,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblNome;
         
         /// <summary>
-        /// TextBox1 control.
+        /// txtNome control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox txtNome;
         
         /// <summary>
         /// lblCpf control.
@@ -112,13 +112,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblCpf;
         
         /// <summary>
-        /// TextBox2 control.
+        /// txtCPF control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox2;
+        protected global::System.Web.UI.WebControls.TextBox txtCPF;
         
         /// <summary>
         /// lblRgRne control.
@@ -130,13 +130,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblRgRne;
         
         /// <summary>
-        /// TextBox3 control.
+        /// txtRG control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox txtRG;
         
         /// <summary>
         /// lblNascimento control.
@@ -148,13 +148,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblNascimento;
         
         /// <summary>
-        /// TextBox4 control.
+        /// txtNascimento control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox4;
+        protected global::System.Web.UI.WebControls.TextBox txtNascimento;
         
         /// <summary>
         /// lblNacionalidade control.
@@ -166,13 +166,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblNacionalidade;
         
         /// <summary>
-        /// TextBox5 control.
+        /// txtNacional control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox5;
+        protected global::System.Web.UI.WebControls.TextBox txtNacional;
         
         /// <summary>
         /// pnlProfissional control.
@@ -193,13 +193,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblArea;
         
         /// <summary>
-        /// TextBox6 control.
+        /// txtArea control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox6;
+        protected global::System.Web.UI.WebControls.TextBox txtArea;
         
         /// <summary>
         /// lblLocalTrabalho control.
@@ -211,13 +211,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblLocalTrabalho;
         
         /// <summary>
-        /// TextBox7 control.
+        /// txtLocal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox7;
+        protected global::System.Web.UI.WebControls.TextBox txtLocal;
         
         /// <summary>
         /// lblSituacaoFormacao control.
@@ -229,13 +229,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblSituacaoFormacao;
         
         /// <summary>
-        /// TextBox8 control.
+        /// txtSituacao control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox8;
+        protected global::System.Web.UI.WebControls.TextBox txtSituacao;
         
         /// <summary>
         /// lblTrabalho control.
@@ -409,13 +409,148 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.TextBox txtNomeMeioAutor;
         
         /// <summary>
-        /// Panel2 control.
+        /// pnlEndereco control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel2;
+        protected global::System.Web.UI.WebControls.Panel pnlEndereco;
+        
+        /// <summary>
+        /// chkEstrangeiro control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkEstrangeiro;
+        
+        /// <summary>
+        /// DropDownList2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList2;
+        
+        /// <summary>
+        /// lblEndereco control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEndereco;
+        
+        /// <summary>
+        /// ddlLogradouro control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlLogradouro;
+        
+        /// <summary>
+        /// txtEndereco control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEndereco;
+        
+        /// <summary>
+        /// TextBox1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        
+        /// <summary>
+        /// lblBairro control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblBairro;
+        
+        /// <summary>
+        /// TextBox2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBox2;
+        
+        /// <summary>
+        /// Label1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label1;
+        
+        /// <summary>
+        /// TextBox3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        
+        /// <summary>
+        /// Label2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label2;
+        
+        /// <summary>
+        /// TextBox4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBox4;
+        
+        /// <summary>
+        /// Label3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label3;
+        
+        /// <summary>
+        /// ddlEstado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlEstado;
+        
+        /// <summary>
+        /// pnlButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlButton;
         
         /// <summary>
         /// btnGerar control.

@@ -25,7 +25,6 @@ namespace InscricaoCongresso.Model
         public string infoAcademica { get; set; }
         public Nullable<bool> palestrante { get; set; }
         public Nullable<int> idTrabalho { get; set; }
-        public int idBoleto { get; set; }
         public Nullable<int> idEndereco { get; set; }
         public string rg_rne { get; set; }
         public string situacaoAcademica { get; set; }

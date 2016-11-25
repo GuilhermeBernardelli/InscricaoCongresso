@@ -189,6 +189,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\PAISES.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Repository.cs" />
     <Compile Include="Model\TRABALHOS.cs">
       <DependentUpon>Model.tt</DependentUpon>

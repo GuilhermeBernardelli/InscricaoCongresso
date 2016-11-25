@@ -17,7 +17,7 @@
         </EntityType>
         <EntityType Name="BOLETOS">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="idInscritos" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="linhaDigitavel" Type="varchar" MaxLength="150" Nullable="false" />
@@ -36,6 +36,7 @@
           <Property Name="outrosAcrescimos" Type="numeric" Precision="7" Scale="2" />
           <Property Name="idValor" Type="int" Nullable="false" />
           <Property Name="idCedente" Type="int" Nullable="false" />
+          <Property Name="idInscritos" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CEDENTES">
           <Key>
@@ -76,6 +77,7 @@
           <Property Name="cep" Type="varchar" MaxLength="8" />
           <Property Name="idCidade" Type="int" Nullable="false" />
           <Property Name="idLogradouro" Type="int" Nullable="false" />
+          <Property Name="idPaises" Type="int" />
         </EntityType>
         <EntityType Name="ESTADOS">
           <Key>
@@ -100,7 +102,6 @@
           <Property Name="infoAcademica" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="palestrante" Type="bit" />
           <Property Name="idTrabalho" Type="int" />
-          <Property Name="idBoleto" Type="int" Nullable="false" />
           <Property Name="idEndereco" Type="int" />
           <Property Name="rg_rne" Type="varchar" MaxLength="20" />
           <Property Name="situacaoAcademica" Type="varchar" MaxLength="30" />
@@ -112,6 +113,14 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descLogradouro" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="siglaLogradouro" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PAISES">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nomePais" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="siglaPais" Type="varchar" MaxLength="3" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -151,15 +160,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_boleto_inscritos">
-          <End Role="BOLETOS" Type="Self.BOLETOS" Multiplicity="1" />
-          <End Role="INSCRITOS" Type="Self.INSCRITOS" Multiplicity="*" />
+        <Association Name="FK__BOLETOS__idInscr__403A8C7D">
+          <End Role="INSCRITOS" Type="Self.INSCRITOS" Multiplicity="1" />
+          <End Role="BOLETOS" Type="Self.BOLETOS" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="BOLETOS">
+            <Principal Role="INSCRITOS">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="INSCRITOS">
-              <PropertyRef Name="idBoleto" />
+            <Dependent Role="BOLETOS">
+              <PropertyRef Name="idInscritos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ENDERECOS__idPai__4316F928">
+          <End Role="PAISES" Type="Self.PAISES" Multiplicity="0..1" />
+          <End Role="ENDERECOS" Type="Self.ENDERECOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PAISES">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ENDERECOS">
+              <PropertyRef Name="idPaises" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -281,6 +302,7 @@
           <EntitySet Name="ESTADOS" EntityType="Self.ESTADOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="INSCRITOS" EntityType="Self.INSCRITOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOGRADOUROS" EntityType="Self.LOGRADOUROS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PAISES" EntityType="Self.PAISES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRABALHOS" EntityType="Self.TRABALHOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VALORES" EntityType="Self.VALORES" Schema="dbo" store:Type="Tables" />
@@ -288,9 +310,13 @@
             <End Role="TRABALHOS" EntitySet="TRABALHOS" />
             <End Role="AUTORES" EntitySet="AUTORES" />
           </AssociationSet>
-          <AssociationSet Name="fk_boleto_inscritos" Association="Self.fk_boleto_inscritos">
-            <End Role="BOLETOS" EntitySet="BOLETOS" />
+          <AssociationSet Name="FK__BOLETOS__idInscr__403A8C7D" Association="Self.FK__BOLETOS__idInscr__403A8C7D">
             <End Role="INSCRITOS" EntitySet="INSCRITOS" />
+            <End Role="BOLETOS" EntitySet="BOLETOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ENDERECOS__idPai__4316F928" Association="Self.FK__ENDERECOS__idPai__4316F928">
+            <End Role="PAISES" EntitySet="PAISES" />
+            <End Role="ENDERECOS" EntitySet="ENDERECOS" />
           </AssociationSet>
           <AssociationSet Name="fk_cedente_boletos" Association="Self.fk_cedente_boletos">
             <End Role="CEDENTES" EntitySet="CEDENTES" />
@@ -334,17 +360,12 @@
     <edmx:ConceptualModels>
       <Schema Namespace="SEMINARIOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DbEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="BOLETOS" EntityType="SEMINARIOModel.BOLETOS" />
           <EntitySet Name="CEDENTES" EntityType="SEMINARIOModel.CEDENTES" />
           <EntitySet Name="CIDADES" EntityType="SEMINARIOModel.CIDADES" />
           <EntitySet Name="CONTAS" EntityType="SEMINARIOModel.CONTAS" />
           <EntitySet Name="ENDERECOS" EntityType="SEMINARIOModel.ENDERECOS" />
           <EntitySet Name="ESTADOS" EntityType="SEMINARIOModel.ESTADOS" />
           <EntitySet Name="LOGRADOUROS" EntityType="SEMINARIOModel.LOGRADOUROS" />
-          <AssociationSet Name="fk_cedente_boletos" Association="SEMINARIOModel.fk_cedente_boletos">
-            <End Role="CEDENTES" EntitySet="CEDENTES" />
-            <End Role="BOLETOS" EntitySet="BOLETOS" />
-          </AssociationSet>
           <AssociationSet Name="fk_contas_cedentes" Association="SEMINARIOModel.fk_contas_cedentes">
             <End Role="CONTAS" EntitySet="CONTAS" />
             <End Role="CEDENTES" EntitySet="CEDENTES" />
@@ -366,55 +387,40 @@
             <End Role="ENDERECOS" EntitySet="ENDERECOS" />
           </AssociationSet>
           <EntitySet Name="VALORES" EntityType="SEMINARIOModel.VALORES" />
-          <AssociationSet Name="fk_valor_boletos" Association="SEMINARIOModel.fk_valor_boletos">
-            <End Role="VALORES" EntitySet="VALORES" />
-            <End Role="BOLETOS" EntitySet="BOLETOS" />
-          </AssociationSet>
-          <EntitySet Name="INSCRITOS" EntityType="SEMINARIOModel.INSCRITOS" />
-          <AssociationSet Name="fk_boleto_inscritos" Association="SEMINARIOModel.fk_boleto_inscritos">
-            <End Role="BOLETOS" EntitySet="BOLETOS" />
-            <End Role="INSCRITOS" EntitySet="INSCRITOS" />
-          </AssociationSet>
-          <AssociationSet Name="fk_endereco_inscritos" Association="SEMINARIOModel.fk_endereco_inscritos">
-            <End Role="ENDERECOS" EntitySet="ENDERECOS" />
-            <End Role="INSCRITOS" EntitySet="INSCRITOS" />
-          </AssociationSet>
           <EntitySet Name="AUTORES" EntityType="SEMINARIOModel.AUTORES" />
           <EntitySet Name="TRABALHOS" EntityType="SEMINARIOModel.TRABALHOS" />
           <AssociationSet Name="FK__AUTORES__idTraba__3D5E1FD2" Association="SEMINARIOModel.FK__AUTORES__idTraba__3D5E1FD2">
             <End Role="TRABALHOS" EntitySet="TRABALHOS" />
             <End Role="AUTORES" EntitySet="AUTORES" />
           </AssociationSet>
+          <EntitySet Name="BOLETOS" EntityType="SEMINARIOModel.BOLETOS" />
+          <EntitySet Name="INSCRITOS" EntityType="SEMINARIOModel.INSCRITOS" />
+          <AssociationSet Name="FK__BOLETOS__idInscr__403A8C7D" Association="SEMINARIOModel.FK__BOLETOS__idInscr__403A8C7D">
+            <End Role="INSCRITOS" EntitySet="INSCRITOS" />
+            <End Role="BOLETOS" EntitySet="BOLETOS" />
+          </AssociationSet>
+          <AssociationSet Name="fk_cedente_boletos" Association="SEMINARIOModel.fk_cedente_boletos">
+            <End Role="CEDENTES" EntitySet="CEDENTES" />
+            <End Role="BOLETOS" EntitySet="BOLETOS" />
+          </AssociationSet>
+          <AssociationSet Name="fk_valor_boletos" Association="SEMINARIOModel.fk_valor_boletos">
+            <End Role="VALORES" EntitySet="VALORES" />
+            <End Role="BOLETOS" EntitySet="BOLETOS" />
+          </AssociationSet>
+          <AssociationSet Name="fk_endereco_inscritos" Association="SEMINARIOModel.fk_endereco_inscritos">
+            <End Role="ENDERECOS" EntitySet="ENDERECOS" />
+            <End Role="INSCRITOS" EntitySet="INSCRITOS" />
+          </AssociationSet>
           <AssociationSet Name="fk_trabalhos_inscritos" Association="SEMINARIOModel.fk_trabalhos_inscritos">
             <End Role="TRABALHOS" EntitySet="TRABALHOS" />
             <End Role="INSCRITOS" EntitySet="INSCRITOS" />
           </AssociationSet>
-        </EntityContainer>
-        <EntityType Name="BOLETOS">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="linhaDigitavel" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="localPagamento" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="carteira" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="especieDocumento" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="dataEmissao" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="dataPagamento" Type="DateTime" Precision="3" />
-          <Property Name="dataVencimento" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="numeroDocumento" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="nossoNumero" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="informacoesDiversas" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="descontos" Type="Decimal" Precision="7" Scale="2" />
-          <Property Name="abatimento" Type="Decimal" Precision="7" Scale="2" />
-          <Property Name="mora" Type="Decimal" Precision="7" Scale="2" />
-          <Property Name="outrosAcrescimos" Type="Decimal" Precision="7" Scale="2" />
-          <Property Name="idValor" Type="Int32" Nullable="false" />
-          <Property Name="idCedente" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CEDENTES" Relationship="SEMINARIOModel.fk_cedente_boletos" FromRole="BOLETOS" ToRole="CEDENTES" />
-          <NavigationProperty Name="VALORES" Relationship="SEMINARIOModel.fk_valor_boletos" FromRole="BOLETOS" ToRole="VALORES" />
-          <NavigationProperty Name="INSCRITOS" Relationship="SEMINARIOModel.fk_boleto_inscritos" FromRole="BOLETOS" ToRole="INSCRITOS" />
-        </EntityType>
+          <EntitySet Name="PAISES" EntityType="SEMINARIOModel.PAISES" />
+          <AssociationSet Name="FK__ENDERECOS__idPai__4316F928" Association="SEMINARIOModel.FK__ENDERECOS__idPai__4316F928">
+            <End Role="PAISES" EntitySet="PAISES" />
+            <End Role="ENDERECOS" EntitySet="ENDERECOS" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="CEDENTES">
           <Key>
             <PropertyRef Name="id" />
@@ -425,9 +431,9 @@
           <Property Name="codigoCedente" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="idEndereco" Type="Int32" Nullable="false" />
           <Property Name="idConta" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="BOLETOS" Relationship="SEMINARIOModel.fk_cedente_boletos" FromRole="CEDENTES" ToRole="BOLETOS" />
           <NavigationProperty Name="CONTAS" Relationship="SEMINARIOModel.fk_contas_cedentes" FromRole="CEDENTES" ToRole="CONTAS" />
           <NavigationProperty Name="ENDERECOS" Relationship="SEMINARIOModel.fk_endereco_cedentes" FromRole="CEDENTES" ToRole="ENDERECOS" />
+          <NavigationProperty Name="BOLETOS" Relationship="SEMINARIOModel.fk_cedente_boletos" FromRole="CEDENTES" ToRole="BOLETOS" />
         </EntityType>
         <EntityType Name="CIDADES">
           <Key>
@@ -464,6 +470,8 @@
           <NavigationProperty Name="CIDADES" Relationship="SEMINARIOModel.fk_cidade_enderecos" FromRole="ENDERECOS" ToRole="CIDADES" />
           <NavigationProperty Name="LOGRADOUROS" Relationship="SEMINARIOModel.fk_logradouro_enderecos" FromRole="ENDERECOS" ToRole="LOGRADOUROS" />
           <NavigationProperty Name="INSCRITOS" Relationship="SEMINARIOModel.fk_endereco_inscritos" FromRole="ENDERECOS" ToRole="INSCRITOS" />
+          <Property Name="idPaises" Type="Int32" />
+          <NavigationProperty Name="PAISES" Relationship="SEMINARIOModel.FK__ENDERECOS__idPai__4316F928" FromRole="ENDERECOS" ToRole="PAISES" />
         </EntityType>
         <EntityType Name="ESTADOS">
           <Key>
@@ -483,18 +491,6 @@
           <Property Name="siglaLogradouro" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ENDERECOS" Relationship="SEMINARIOModel.fk_logradouro_enderecos" FromRole="LOGRADOUROS" ToRole="ENDERECOS" />
         </EntityType>
-        <Association Name="fk_cedente_boletos">
-          <End Type="SEMINARIOModel.CEDENTES" Role="CEDENTES" Multiplicity="1" />
-          <End Type="SEMINARIOModel.BOLETOS" Role="BOLETOS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CEDENTES">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="BOLETOS">
-              <PropertyRef Name="idCedente" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_contas_cedentes">
           <End Type="SEMINARIOModel.CONTAS" Role="CONTAS" Multiplicity="1" />
           <End Type="SEMINARIOModel.CEDENTES" Role="CEDENTES" Multiplicity="*" />
@@ -564,65 +560,6 @@
           <Property Name="descritivo" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="BOLETOS" Relationship="SEMINARIOModel.fk_valor_boletos" FromRole="VALORES" ToRole="BOLETOS" />
         </EntityType>
-        <Association Name="fk_valor_boletos">
-          <End Type="SEMINARIOModel.VALORES" Role="VALORES" Multiplicity="1" />
-          <End Type="SEMINARIOModel.BOLETOS" Role="BOLETOS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VALORES">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="BOLETOS">
-              <PropertyRef Name="idValor" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="INSCRITOS">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nome" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="cpf" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="dataNascimento" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="nacionalidade" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="areaProfissional" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="infoProfissional" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="infoAcademica" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="palestrante" Type="Boolean" />
-          <Property Name="idTrabalho" Type="Int32" />
-          <Property Name="idBoleto" Type="Int32" Nullable="false" />
-          <Property Name="idEndereco" Type="Int32" />
-          <Property Name="rg_rne" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="situacaoAcademica" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="BOLETOS" Relationship="SEMINARIOModel.fk_boleto_inscritos" FromRole="INSCRITOS" ToRole="BOLETOS" />
-          <NavigationProperty Name="ENDERECOS" Relationship="SEMINARIOModel.fk_endereco_inscritos" FromRole="INSCRITOS" ToRole="ENDERECOS" />
-          <NavigationProperty Name="TRABALHOS" Relationship="SEMINARIOModel.fk_trabalhos_inscritos" FromRole="INSCRITOS" ToRole="TRABALHOS" />
-        </EntityType>
-        <Association Name="fk_boleto_inscritos">
-          <End Type="SEMINARIOModel.BOLETOS" Role="BOLETOS" Multiplicity="1" />
-          <End Type="SEMINARIOModel.INSCRITOS" Role="INSCRITOS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BOLETOS">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="INSCRITOS">
-              <PropertyRef Name="idBoleto" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_endereco_inscritos">
-          <End Type="SEMINARIOModel.ENDERECOS" Role="ENDERECOS" Multiplicity="0..1" />
-          <End Type="SEMINARIOModel.INSCRITOS" Role="INSCRITOS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ENDERECOS">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="INSCRITOS">
-              <PropertyRef Name="idEndereco" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="AUTORES">
           <Key>
             <PropertyRef Name="id" />
@@ -656,6 +593,102 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="BOLETOS">
+          <Key>
+            <PropertyRef Name="idInscritos" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="linhaDigitavel" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="localPagamento" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="carteira" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="especieDocumento" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="dataEmissao" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="dataPagamento" Type="DateTime" Precision="3" />
+          <Property Name="dataVencimento" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="numeroDocumento" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="nossoNumero" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesDiversas" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="descontos" Type="Decimal" Precision="7" Scale="2" />
+          <Property Name="abatimento" Type="Decimal" Precision="7" Scale="2" />
+          <Property Name="mora" Type="Decimal" Precision="7" Scale="2" />
+          <Property Name="outrosAcrescimos" Type="Decimal" Precision="7" Scale="2" />
+          <Property Name="idValor" Type="Int32" Nullable="false" />
+          <Property Name="idCedente" Type="Int32" Nullable="false" />
+          <Property Name="idInscritos" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="INSCRITOS" Relationship="SEMINARIOModel.FK__BOLETOS__idInscr__403A8C7D" FromRole="BOLETOS" ToRole="INSCRITOS" />
+          <NavigationProperty Name="CEDENTES" Relationship="SEMINARIOModel.fk_cedente_boletos" FromRole="BOLETOS" ToRole="CEDENTES" />
+          <NavigationProperty Name="VALORES" Relationship="SEMINARIOModel.fk_valor_boletos" FromRole="BOLETOS" ToRole="VALORES" />
+        </EntityType>
+        <EntityType Name="INSCRITOS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="cpf" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="dataNascimento" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="nacionalidade" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="areaProfissional" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="infoProfissional" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="infoAcademica" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="palestrante" Type="Boolean" />
+          <Property Name="idTrabalho" Type="Int32" />
+          <Property Name="idEndereco" Type="Int32" />
+          <Property Name="rg_rne" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="situacaoAcademica" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BOLETOS" Relationship="SEMINARIOModel.FK__BOLETOS__idInscr__403A8C7D" FromRole="INSCRITOS" ToRole="BOLETOS" />
+          <NavigationProperty Name="ENDERECOS" Relationship="SEMINARIOModel.fk_endereco_inscritos" FromRole="INSCRITOS" ToRole="ENDERECOS" />
+          <NavigationProperty Name="TRABALHOS" Relationship="SEMINARIOModel.fk_trabalhos_inscritos" FromRole="INSCRITOS" ToRole="TRABALHOS" />
+        </EntityType>
+        <Association Name="FK__BOLETOS__idInscr__403A8C7D">
+          <End Type="SEMINARIOModel.INSCRITOS" Role="INSCRITOS" Multiplicity="1" />
+          <End Type="SEMINARIOModel.BOLETOS" Role="BOLETOS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="INSCRITOS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BOLETOS">
+              <PropertyRef Name="idInscritos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_cedente_boletos">
+          <End Type="SEMINARIOModel.CEDENTES" Role="CEDENTES" Multiplicity="1" />
+          <End Type="SEMINARIOModel.BOLETOS" Role="BOLETOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CEDENTES">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BOLETOS">
+              <PropertyRef Name="idCedente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_valor_boletos">
+          <End Type="SEMINARIOModel.VALORES" Role="VALORES" Multiplicity="1" />
+          <End Type="SEMINARIOModel.BOLETOS" Role="BOLETOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VALORES">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BOLETOS">
+              <PropertyRef Name="idValor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_endereco_inscritos">
+          <End Type="SEMINARIOModel.ENDERECOS" Role="ENDERECOS" Multiplicity="0..1" />
+          <End Type="SEMINARIOModel.INSCRITOS" Role="INSCRITOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ENDERECOS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="INSCRITOS">
+              <PropertyRef Name="idEndereco" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_trabalhos_inscritos">
           <End Type="SEMINARIOModel.TRABALHOS" Role="TRABALHOS" Multiplicity="0..1" />
           <End Type="SEMINARIOModel.INSCRITOS" Role="INSCRITOS" Multiplicity="*" />
@@ -668,35 +701,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="PAISES">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nomePais" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="siglaPais" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ENDERECOS" Relationship="SEMINARIOModel.FK__ENDERECOS__idPai__4316F928" FromRole="PAISES" ToRole="ENDERECOS" />
+        </EntityType>
+        <Association Name="FK__ENDERECOS__idPai__4316F928">
+          <End Type="SEMINARIOModel.PAISES" Role="PAISES" Multiplicity="0..1" />
+          <End Type="SEMINARIOModel.ENDERECOS" Role="ENDERECOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PAISES">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ENDERECOS">
+              <PropertyRef Name="idPaises" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SEMINARIOModelStoreContainer" CdmEntityContainer="DbEntities">
-          <EntitySetMapping Name="BOLETOS">
-            <EntityTypeMapping TypeName="SEMINARIOModel.BOLETOS">
-              <MappingFragment StoreEntitySet="BOLETOS">
-                <ScalarProperty Name="idCedente" ColumnName="idCedente" />
-                <ScalarProperty Name="idValor" ColumnName="idValor" />
-                <ScalarProperty Name="outrosAcrescimos" ColumnName="outrosAcrescimos" />
-                <ScalarProperty Name="mora" ColumnName="mora" />
-                <ScalarProperty Name="abatimento" ColumnName="abatimento" />
-                <ScalarProperty Name="descontos" ColumnName="descontos" />
-                <ScalarProperty Name="informacoesDiversas" ColumnName="informacoesDiversas" />
-                <ScalarProperty Name="nossoNumero" ColumnName="nossoNumero" />
-                <ScalarProperty Name="numeroDocumento" ColumnName="numeroDocumento" />
-                <ScalarProperty Name="dataVencimento" ColumnName="dataVencimento" />
-                <ScalarProperty Name="dataPagamento" ColumnName="dataPagamento" />
-                <ScalarProperty Name="dataEmissao" ColumnName="dataEmissao" />
-                <ScalarProperty Name="especieDocumento" ColumnName="especieDocumento" />
-                <ScalarProperty Name="carteira" ColumnName="carteira" />
-                <ScalarProperty Name="localPagamento" ColumnName="localPagamento" />
-                <ScalarProperty Name="linhaDigitavel" ColumnName="linhaDigitavel" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CEDENTES">
             <EntityTypeMapping TypeName="SEMINARIOModel.CEDENTES">
               <MappingFragment StoreEntitySet="CEDENTES">
@@ -730,6 +761,7 @@
           <EntitySetMapping Name="ENDERECOS">
             <EntityTypeMapping TypeName="SEMINARIOModel.ENDERECOS">
               <MappingFragment StoreEntitySet="ENDERECOS">
+                <ScalarProperty Name="idPaises" ColumnName="idPaises" />
                 <ScalarProperty Name="idLogradouro" ColumnName="idLogradouro" />
                 <ScalarProperty Name="idCidade" ColumnName="idCidade" />
                 <ScalarProperty Name="cep" ColumnName="cep" />
@@ -768,27 +800,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="INSCRITOS">
-            <EntityTypeMapping TypeName="SEMINARIOModel.INSCRITOS">
-              <MappingFragment StoreEntitySet="INSCRITOS">
-                <ScalarProperty Name="situacaoAcademica" ColumnName="situacaoAcademica" />
-                <ScalarProperty Name="rg_rne" ColumnName="rg_rne" />
-                <ScalarProperty Name="idEndereco" ColumnName="idEndereco" />
-                <ScalarProperty Name="idBoleto" ColumnName="idBoleto" />
-                <ScalarProperty Name="idTrabalho" ColumnName="idTrabalho" />
-                <ScalarProperty Name="palestrante" ColumnName="palestrante" />
-                <ScalarProperty Name="infoAcademica" ColumnName="infoAcademica" />
-                <ScalarProperty Name="infoProfissional" ColumnName="infoProfissional" />
-                <ScalarProperty Name="areaProfissional" ColumnName="areaProfissional" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="nacionalidade" ColumnName="nacionalidade" />
-                <ScalarProperty Name="dataNascimento" ColumnName="dataNascimento" />
-                <ScalarProperty Name="cpf" ColumnName="cpf" />
-                <ScalarProperty Name="nome" ColumnName="nome" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AUTORES">
             <EntityTypeMapping TypeName="SEMINARIOModel.AUTORES">
               <MappingFragment StoreEntitySet="AUTORES">
@@ -805,6 +816,59 @@
               <MappingFragment StoreEntitySet="TRABALHOS">
                 <ScalarProperty Name="resumo" ColumnName="resumo" />
                 <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOLETOS">
+            <EntityTypeMapping TypeName="SEMINARIOModel.BOLETOS">
+              <MappingFragment StoreEntitySet="BOLETOS">
+                <ScalarProperty Name="idInscritos" ColumnName="idInscritos" />
+                <ScalarProperty Name="idCedente" ColumnName="idCedente" />
+                <ScalarProperty Name="idValor" ColumnName="idValor" />
+                <ScalarProperty Name="outrosAcrescimos" ColumnName="outrosAcrescimos" />
+                <ScalarProperty Name="mora" ColumnName="mora" />
+                <ScalarProperty Name="abatimento" ColumnName="abatimento" />
+                <ScalarProperty Name="descontos" ColumnName="descontos" />
+                <ScalarProperty Name="informacoesDiversas" ColumnName="informacoesDiversas" />
+                <ScalarProperty Name="nossoNumero" ColumnName="nossoNumero" />
+                <ScalarProperty Name="numeroDocumento" ColumnName="numeroDocumento" />
+                <ScalarProperty Name="dataVencimento" ColumnName="dataVencimento" />
+                <ScalarProperty Name="dataPagamento" ColumnName="dataPagamento" />
+                <ScalarProperty Name="dataEmissao" ColumnName="dataEmissao" />
+                <ScalarProperty Name="especieDocumento" ColumnName="especieDocumento" />
+                <ScalarProperty Name="carteira" ColumnName="carteira" />
+                <ScalarProperty Name="localPagamento" ColumnName="localPagamento" />
+                <ScalarProperty Name="linhaDigitavel" ColumnName="linhaDigitavel" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="INSCRITOS">
+            <EntityTypeMapping TypeName="SEMINARIOModel.INSCRITOS">
+              <MappingFragment StoreEntitySet="INSCRITOS">
+                <ScalarProperty Name="situacaoAcademica" ColumnName="situacaoAcademica" />
+                <ScalarProperty Name="rg_rne" ColumnName="rg_rne" />
+                <ScalarProperty Name="idEndereco" ColumnName="idEndereco" />
+                <ScalarProperty Name="idTrabalho" ColumnName="idTrabalho" />
+                <ScalarProperty Name="palestrante" ColumnName="palestrante" />
+                <ScalarProperty Name="infoAcademica" ColumnName="infoAcademica" />
+                <ScalarProperty Name="infoProfissional" ColumnName="infoProfissional" />
+                <ScalarProperty Name="areaProfissional" ColumnName="areaProfissional" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="nacionalidade" ColumnName="nacionalidade" />
+                <ScalarProperty Name="dataNascimento" ColumnName="dataNascimento" />
+                <ScalarProperty Name="cpf" ColumnName="cpf" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PAISES">
+            <EntityTypeMapping TypeName="SEMINARIOModel.PAISES">
+              <MappingFragment StoreEntitySet="PAISES">
+                <ScalarProperty Name="siglaPais" ColumnName="siglaPais" />
+                <ScalarProperty Name="nomePais" ColumnName="nomePais" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

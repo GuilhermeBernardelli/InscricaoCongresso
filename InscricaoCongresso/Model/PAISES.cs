@@ -12,22 +12,17 @@ namespace InscricaoCongresso.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class CEDENTES
+    public partial class PAISES
     {
-        public CEDENTES()
+        public PAISES()
         {
-            this.BOLETOS = new HashSet<BOLETOS>();
+            this.ENDERECOS = new HashSet<ENDERECOS>();
         }
     
         public int id { get; set; }
-        public string nomeCedente { get; set; }
-        public string cnpjCedente { get; set; }
-        public string codigoCedente { get; set; }
-        public int idEndereco { get; set; }
-        public int idConta { get; set; }
+        public string nomePais { get; set; }
+        public string siglaPais { get; set; }
     
-        public virtual CONTAS CONTAS { get; set; }
-        public virtual ENDERECOS ENDERECOS { get; set; }
-        public virtual ICollection<BOLETOS> BOLETOS { get; set; }
+        public virtual ICollection<ENDERECOS> ENDERECOS { get; set; }
     }
 }

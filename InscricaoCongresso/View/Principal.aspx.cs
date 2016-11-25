@@ -13,9 +13,12 @@ namespace InscricaoCongresso.View
     {
         public static bool novo = true;
         public static string idioma = "BR";
+        public static string linhaDigitavel;
         Controle controle = new Controle();
         TRABALHOS trabalho = new TRABALHOS();
         AUTORES autor = new AUTORES();
+        INSCRITOS inscricao = new INSCRITOS();
+        ENDERECOS endereco = new ENDERECOS();
         protected void Page_Load(object sender, EventArgs e)
         {
             
@@ -37,10 +40,39 @@ namespace InscricaoCongresso.View
               
         protected void btnGerar_Click(object sender, EventArgs e)
         {
+            if (novo)
+            {
+                controle.adicionarTrabalho(trabalho);
+                novo = false;
+            }
+            trabalho.titulo = txtTituloTrabalho.Text;
+            trabalho.resumo = txtTrabalhoResumo.Text;
+            controle.atualizar();
+
+            controle.adicionarAutor(autor);
+            autor.idTrabalho = controle.idTrabalhoPorTitulo(txtTituloTrabalho.Text);
+            autor.nomeAutor = txtNomeAutor.Text;
+            autor.nomesMeioAutor = txtNomeMeioAutor.Text;
+            autor.sobrenomeAutor = txtSobrenomeAutor.Text;
+
+            gerarBoleto();
+
+            controle.adicionarEndereco(endereco);
+            endereco.nomeEndereco = ;
+            endereco.numeroEndereco = ;
+
+            controle.atualizar();
+            controle.adicionarInscricao(inscricao);
             
-            //chama a renderização do código de barras a partir da string, exclusivamente numérica, passada como parametro
-            //Session["boleto"] = TextBox1.Text;
+            controle.atualizar();
+            //chama a renderização do código de barras a partir do parametro de inscrição
+            Session["boleto"] = inscricao.id;
             Response.Redirect("boleto.aspx");
+            
+        }
+
+        private void gerarBoleto()
+        {
             
         }
 
@@ -149,15 +181,15 @@ namespace InscricaoCongresso.View
         {
             if (novo)
             {
-                //controle.adicionarTrabalho();
+                controle.adicionarTrabalho(trabalho);
                 novo = false;
             }
             trabalho.titulo = txtTituloTrabalho.Text;
             trabalho.resumo = txtTrabalhoResumo.Text;
-            //controle.atualizar();
+            controle.atualizar();
 
-            //controle.adicionarAutor();
-            //autor.idTrabalho = controle.idTrabalhoPorTitulo(txtTituloTrabalho.Text);
+            controle.adicionarAutor(autor);
+            autor.idTrabalho = controle.idTrabalhoPorTitulo(txtTituloTrabalho.Text);
             autor.nomeAutor = txtNomeAutor.Text;
             autor.nomesMeioAutor = txtNomeMeioAutor.Text;
             autor.sobrenomeAutor = txtSobrenomeAutor.Text;
@@ -170,7 +202,9 @@ namespace InscricaoCongresso.View
             pnlAutor.Controls.Remove(txtNomeMeioAutor);
 
             functionNovoAutor();
-            
+            txtTrabalhoAutores.Controls.Add(new LiteralControl("\n"));
+            txtTrabalhoAutores.Text = txtTrabalhoAutores.Text + txtSobrenomeAutor.Text + ", " + txtNomeAutor.Text + " " + txtNomeMeioAutor.Text;
+
         }
 
         public void functionNovoAutor()

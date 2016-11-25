@@ -14,11 +14,6 @@ namespace InscricaoCongresso.Model
     
     public partial class BOLETOS
     {
-        public BOLETOS()
-        {
-            this.INSCRITOS = new HashSet<INSCRITOS>();
-        }
-    
         public int id { get; set; }
         public string linhaDigitavel { get; set; }
         public string localPagamento { get; set; }
@@ -36,9 +31,10 @@ namespace InscricaoCongresso.Model
         public Nullable<decimal> outrosAcrescimos { get; set; }
         public int idValor { get; set; }
         public int idCedente { get; set; }
+        public int idInscritos { get; set; }
     
+        public virtual INSCRITOS INSCRITOS { get; set; }
         public virtual CEDENTES CEDENTES { get; set; }
         public virtual VALORES VALORES { get; set; }
-        public virtual ICollection<INSCRITOS> INSCRITOS { get; set; }
     }
 }

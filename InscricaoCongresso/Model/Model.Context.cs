@@ -25,7 +25,6 @@ namespace InscricaoCongresso.Model
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<BOLETOS> BOLETOS { get; set; }
         public DbSet<CEDENTES> CEDENTES { get; set; }
         public DbSet<CIDADES> CIDADES { get; set; }
         public DbSet<CONTAS> CONTAS { get; set; }
@@ -33,8 +32,10 @@ namespace InscricaoCongresso.Model
         public DbSet<ESTADOS> ESTADOS { get; set; }
         public DbSet<LOGRADOUROS> LOGRADOUROS { get; set; }
         public DbSet<VALORES> VALORES { get; set; }
-        public DbSet<INSCRITOS> INSCRITOS { get; set; }
         public DbSet<AUTORES> AUTORES { get; set; }
         public DbSet<TRABALHOS> TRABALHOS { get; set; }
+        public DbSet<BOLETOS> BOLETOS { get; set; }
+        public DbSet<INSCRITOS> INSCRITOS { get; set; }
+        public DbSet<PAISES> PAISES { get; set; }
     }
 }
