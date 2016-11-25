@@ -1,5 +1,6 @@
 ﻿body{
     font-family:Arial;
+    margin:0px;
 }
 .logo{
     float:left;
@@ -15,4 +16,7 @@
 }
 .linha{
     text-align:right;
+}
+.inscricao{
+    text-align:left;
 }

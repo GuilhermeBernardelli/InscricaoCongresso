@@ -37,8 +37,8 @@ namespace InscricaoCongresso.Model
         public int idValor { get; set; }
         public int idCedente { get; set; }
     
-        public virtual ICollection<INSCRITOS> INSCRITOS { get; set; }
         public virtual CEDENTES CEDENTES { get; set; }
         public virtual VALORES VALORES { get; set; }
+        public virtual ICollection<INSCRITOS> INSCRITOS { get; set; }
     }
 }

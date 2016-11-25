@@ -16,15 +16,15 @@ namespace InscricaoCongresso.Model
     {
         public TRABALHOS()
         {
+            this.AUTORES = new HashSet<AUTORES>();
             this.INSCRITOS = new HashSet<INSCRITOS>();
         }
     
         public int id { get; set; }
         public string titulo { get; set; }
         public string resumo { get; set; }
-        public int idAutor { get; set; }
     
-        public virtual AUTORES AUTORES { get; set; }
+        public virtual ICollection<AUTORES> AUTORES { get; set; }
         public virtual ICollection<INSCRITOS> INSCRITOS { get; set; }
     }
 }

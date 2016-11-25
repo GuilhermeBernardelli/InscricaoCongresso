@@ -14,16 +14,12 @@ namespace InscricaoCongresso.Model
     
     public partial class AUTORES
     {
-        public AUTORES()
-        {
-            this.TRABALHOS = new HashSet<TRABALHOS>();
-        }
-    
         public int id { get; set; }
         public string nomeAutor { get; set; }
         public string sobrenomeAutor { get; set; }
         public string nomesMeioAutor { get; set; }
+        public Nullable<int> idTrabalho { get; set; }
     
-        public virtual ICollection<TRABALHOS> TRABALHOS { get; set; }
+        public virtual TRABALHOS TRABALHOS { get; set; }
     }
 }

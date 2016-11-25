@@ -31,7 +31,7 @@ namespace InscricaoCongresso.Model
     
         public virtual ICollection<CEDENTES> CEDENTES { get; set; }
         public virtual CIDADES CIDADES { get; set; }
-        public virtual ICollection<INSCRITOS> INSCRITOS { get; set; }
         public virtual LOGRADOUROS LOGRADOUROS { get; set; }
+        public virtual ICollection<INSCRITOS> INSCRITOS { get; set; }
     }
 }

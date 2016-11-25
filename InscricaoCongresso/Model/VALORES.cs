@@ -21,6 +21,7 @@ namespace InscricaoCongresso.Model
     
         public int id { get; set; }
         public decimal valor { get; set; }
+        public string descritivo { get; set; }
     
         public virtual ICollection<BOLETOS> BOLETOS { get; set; }
     }

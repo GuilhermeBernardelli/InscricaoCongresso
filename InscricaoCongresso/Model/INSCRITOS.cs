@@ -22,12 +22,13 @@ namespace InscricaoCongresso.Model
         public string email { get; set; }
         public string areaProfissional { get; set; }
         public string infoProfissional { get; set; }
-        public string areaAcademica { get; set; }
         public string infoAcademica { get; set; }
         public Nullable<bool> palestrante { get; set; }
-        public int idEndereco { get; set; }
         public Nullable<int> idTrabalho { get; set; }
         public int idBoleto { get; set; }
+        public Nullable<int> idEndereco { get; set; }
+        public string rg_rne { get; set; }
+        public string situacaoAcademica { get; set; }
     
         public virtual BOLETOS BOLETOS { get; set; }
         public virtual ENDERECOS ENDERECOS { get; set; }

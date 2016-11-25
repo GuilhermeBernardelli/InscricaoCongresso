@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -14,6 +16,7 @@ namespace InscricaoCongresso.View
         {
             //numeroBoleto = Session["boleto"].ToString();
             //functionCodeBar(numeroBoleto);
+            functionCodeBar("03399.12388 79800.000006 00111.201026 4 37690001113500");
         }
         public void functionCodeBar(string numero)
         {
@@ -31,8 +34,8 @@ namespace InscricaoCongresso.View
         }
         public void functionPretoGrosso()
         {
-            Image barragrossa = new Image();
-            barragrossa.ImageUrl = "~/Image/p.gif";
+            System.Web.UI.WebControls.Image barragrossa = new System.Web.UI.WebControls.Image();
+            barragrossa.ImageUrl = "~/Image/p.png";
             Label pretoGrosso = new Label();
             pretoGrosso.Controls.Add(barragrossa);
             pnlCodeBar.Controls.Add(pretoGrosso);
@@ -40,16 +43,16 @@ namespace InscricaoCongresso.View
 
         public void functionPretoFino()
         {
-            Image barrafina = new Image();
-            barrafina.ImageUrl = "~/Image/p_f.gif";
+            System.Web.UI.WebControls.Image barrafina = new System.Web.UI.WebControls.Image();
+            barrafina.ImageUrl = "~/Image/p_f.png";
             Label pretoFino = new Label();
             pretoFino.Controls.Add(barrafina);
             pnlCodeBar.Controls.Add(pretoFino);
         }
         public void functionBrancoGrosso()
         {
-            Image brancogrosso = new Image();
-            brancogrosso.ImageUrl = "~/Image/b.gif";
+            System.Web.UI.WebControls.Image brancogrosso = new System.Web.UI.WebControls.Image();
+            brancogrosso.ImageUrl = "~/Image/b.png";
             Label brancoGrosso = new Label();
             brancoGrosso.Controls.Add(brancogrosso);
             pnlCodeBar.Controls.Add(brancoGrosso);
@@ -57,8 +60,8 @@ namespace InscricaoCongresso.View
 
         public void functionBrancoFino()
         {
-            Image brancafina = new Image();
-            brancafina.ImageUrl = "~/Image/b_f.gif";
+            System.Web.UI.WebControls.Image brancafina = new System.Web.UI.WebControls.Image();
+            brancafina.ImageUrl = "~/Image/b_f.png";
             Label brancoFino = new Label();
             brancoFino.Controls.Add(brancafina);
             pnlCodeBar.Controls.Add(brancoFino);
@@ -263,6 +266,28 @@ namespace InscricaoCongresso.View
                     }
                 }
             }
+        }
+
+        protected void btnImprimir_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                PrintDocument pd = new PrintDocument();
+                pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
+                pd.Print();
+            }
+
+            catch 
+            {
+                
+            }
+        }
+
+        private void pd_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            e.Graphics.DrawString("Imprindo em.NET", new Font("Arial", 10), Brushes.Black, 0, 0);
+            e.HasMorePages = false;
         }
     }
 }

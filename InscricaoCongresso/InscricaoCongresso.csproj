@@ -101,7 +101,14 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Image\b.png" />
     <Content Include="Image\BoletoBase.png" />
+    <Content Include="Image\b_f.png" />
+    <Content Include="Image\icoBR.jpg" />
+    <Content Include="Image\icoEN.jpg" />
+    <Content Include="Image\icoES.jpg" />
+    <Content Include="Image\p.png" />
+    <Content Include="Image\p_f.png" />
     <Content Include="Image\Santander.png" />
     <Content Include="Model\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -135,14 +142,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CSS\StyleSheet.css" />
-    <Content Include="Image\b_f.gif" />
-    <Content Include="Image\b.gif" />
-    <Content Include="Image\p_f.gif" />
-    <Content Include="Image\p.gif" />
     <Content Include="View\Principal.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\Controle.cs" />
     <Compile Include="Model\AUTORES.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -185,6 +189,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\Repository.cs" />
     <Compile Include="Model\TRABALHOS.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -214,9 +219,7 @@
       <DependentUpon>Principal.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Control\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
