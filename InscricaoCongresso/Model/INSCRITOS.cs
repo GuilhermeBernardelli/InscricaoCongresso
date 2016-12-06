@@ -16,21 +16,23 @@ namespace InscricaoCongresso.Model
     {
         public int id { get; set; }
         public string nome { get; set; }
-        public string cpf { get; set; }
-        public System.DateTime dataNascimento { get; set; }
         public string nacionalidade { get; set; }
         public string email { get; set; }
-        public string areaProfissional { get; set; }
-        public string infoProfissional { get; set; }
-        public string infoAcademica { get; set; }
         public Nullable<bool> palestrante { get; set; }
         public Nullable<int> idTrabalho { get; set; }
-        public Nullable<int> idEndereco { get; set; }
-        public string rg_rne { get; set; }
         public string situacaoAcademica { get; set; }
+        public string telefone1 { get; set; }
+        public string telefone2 { get; set; }
+        public string celular { get; set; }
+        public string cpf { get; set; }
+        public string areaProfissional { get; set; }
+        public string rg_rne { get; set; }
+        public int idEndereco { get; set; }
+        public string infoProfissional { get; set; }
+        public System.DateTime dataNascimento { get; set; }
     
-        public virtual BOLETOS BOLETOS { get; set; }
         public virtual ENDERECOS ENDERECOS { get; set; }
         public virtual TRABALHOS TRABALHOS { get; set; }
+        public virtual BOLETOS BOLETOS { get; set; }
     }
 }

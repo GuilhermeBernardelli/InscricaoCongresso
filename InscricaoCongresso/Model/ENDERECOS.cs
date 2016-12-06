@@ -25,15 +25,15 @@ namespace InscricaoCongresso.Model
         public string numeroEndereco { get; set; }
         public string complemento { get; set; }
         public string bairro { get; set; }
-        public string cep { get; set; }
         public int idCidade { get; set; }
         public int idLogradouro { get; set; }
         public Nullable<int> idPaises { get; set; }
+        public string cep { get; set; }
     
         public virtual ICollection<CEDENTES> CEDENTES { get; set; }
         public virtual CIDADES CIDADES { get; set; }
-        public virtual LOGRADOUROS LOGRADOUROS { get; set; }
-        public virtual ICollection<INSCRITOS> INSCRITOS { get; set; }
         public virtual PAISES PAISES { get; set; }
+        public virtual ICollection<INSCRITOS> INSCRITOS { get; set; }
+        public virtual LOGRADOUROS LOGRADOUROS { get; set; }
     }
 }

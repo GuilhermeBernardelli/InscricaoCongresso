@@ -30,6 +30,16 @@ namespace InscricaoCongresso.Control
             entity.salvarInscricao(inscricao);
         }
 
+        public void adicionarEndereco(ENDERECOS endereco)
+        {
+            entity.salvarEndereco(endereco);
+        }
+
+        public void adicionarBoleto(BOLETOS boleto)
+        {
+            entity.salvarBoleto(boleto);
+        }
+
         public int idTrabalhoPorTitulo(string titulo)
         {
             int id;
@@ -37,6 +47,77 @@ namespace InscricaoCongresso.Control
             id = entity.pesquisaIdTrabalhoNome(nome);
             return id; 
         }
-                
+
+
+
+        public List<AUTORES> autoresIdtrabalho(int valor)
+        {
+            int idTrabalho = valor;            
+            return entity.pesquisaAutoresTrabalhoID(idTrabalho);
+        }
+
+        public List<CIDADES> pesquisaCidades(int estado)
+        {
+            int pesquisa = estado;
+            return entity.selectCidades(pesquisa);
+        }
+
+        public BOLETOS pesquisaBoletoUsuario(int userId)
+        {
+            int Id = userId;
+            return entity.selectBoletoUser(Id);
+        }
+
+        public INSCRITOS pesquisaInscritos(string cpf)
+        {
+            string pesquisa = cpf;
+            return entity.selectInscritos(pesquisa);
+        }
+
+        public List<LOGRADOUROS> pesquisaLogradouros()
+        {
+            return entity.selectLogradouros();
+        }
+
+        public List<PAISES> pesquisaPaises()
+        {
+            return entity.selectPaises();
+        }
+
+        public List<ESTADOS> pesquisaEstados()
+        {
+            return entity.selectEstados();
+        }
+
+        public ENDERECOS pesquisaIdEndereco(string endereco, string numero)
+        {
+            string nome = endereco;
+            string num = numero;
+            return entity.pesquisaEnderecoPorNomeNum(nome, num);
+        }
+
+        public CEDENTES pesquisaCedente(string nome)
+        {
+            string empresa = nome;
+            return entity.selectCedente(empresa);
+        }
+
+        public int pesquisaBoletoAtualNum(int idInscrito)
+        {
+            int id = idInscrito;
+            return entity.selectBoletoAtualNum(id);
+        }
+
+        public CONTAS pesquisaContaPorId(int idConta)
+        {
+            int id = idConta;
+            return entity.selectConta(id);
+        }
+
+        public VALORES pesquisaValorPorId(int valor)
+        {
+            int id = valor;
+            return entity.selectValor(id);
+        }
     }
 }

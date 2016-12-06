@@ -760,6 +760,15 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblInstrucoes10;
         
         /// <summary>
+        /// lblInstrucoes11 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblInstrucoes11;
+        
+        /// <summary>
         /// lblT_Abatimento1 control.
         /// </summary>
         /// <remarks>
@@ -938,5 +947,14 @@ namespace InscricaoCongresso.View {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCorte;
+        
+        /// <summary>
+        /// btnPrint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnPrint;
     }
 }

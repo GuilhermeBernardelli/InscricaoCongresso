@@ -22,6 +22,7 @@ namespace InscricaoCongresso.Model
         public int id { get; set; }
         public string codigoBanco { get; set; }
         public string agenciaNumero { get; set; }
+        public Nullable<int> carteira { get; set; }
     
         public virtual ICollection<CEDENTES> CEDENTES { get; set; }
     }

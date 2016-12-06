@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Web;
@@ -11,12 +12,15 @@ namespace InscricaoCongresso.View
 {
     public partial class Boleto : System.Web.UI.Page
     {
-        string numeroBoleto;
+        public string codBarras = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-            //numeroBoleto = Session["boleto"].ToString();
-            //functionCodeBar(numeroBoleto);
-            functionCodeBar("03399.12388 79800.000006 00111.201026 4 37690001113500");
+            
+            //codBarras = Session["boleto"].ToString();
+            //functionCodeBar(codBarras);
+            
+            lblLinhaDigitavel.Text = lblLinhaDigitavel1.Text = "23792.37205 60037.106394 74008.145000 3 69940000000000";
+            functionCodeBar("23793699400000000002372060037106397400814500");
         }
         public void functionCodeBar(string numero)
         {
@@ -36,7 +40,10 @@ namespace InscricaoCongresso.View
         {
             System.Web.UI.WebControls.Image barragrossa = new System.Web.UI.WebControls.Image();
             barragrossa.ImageUrl = "~/Image/p.png";
-            Label pretoGrosso = new Label();
+            Label pretoGrosso = new Label()
+            {
+                Width = 4                
+            };
             pretoGrosso.Controls.Add(barragrossa);
             pnlCodeBar.Controls.Add(pretoGrosso);
         }
@@ -45,7 +52,10 @@ namespace InscricaoCongresso.View
         {
             System.Web.UI.WebControls.Image barrafina = new System.Web.UI.WebControls.Image();
             barrafina.ImageUrl = "~/Image/p_f.png";
-            Label pretoFino = new Label();
+            Label pretoFino = new Label()
+            {
+                Width = 2
+            };
             pretoFino.Controls.Add(barrafina);
             pnlCodeBar.Controls.Add(pretoFino);
         }
@@ -53,7 +63,10 @@ namespace InscricaoCongresso.View
         {
             System.Web.UI.WebControls.Image brancogrosso = new System.Web.UI.WebControls.Image();
             brancogrosso.ImageUrl = "~/Image/b.png";
-            Label brancoGrosso = new Label();
+            Label brancoGrosso = new Label()
+            {
+                Width = 4
+            };
             brancoGrosso.Controls.Add(brancogrosso);
             pnlCodeBar.Controls.Add(brancoGrosso);
         }
@@ -62,7 +75,10 @@ namespace InscricaoCongresso.View
         {
             System.Web.UI.WebControls.Image brancafina = new System.Web.UI.WebControls.Image();
             brancafina.ImageUrl = "~/Image/b_f.png";
-            Label brancoFino = new Label();
+            Label brancoFino = new Label()
+            {
+                Width = 2
+            };
             brancoFino.Controls.Add(brancafina);
             pnlCodeBar.Controls.Add(brancoFino);
         }
@@ -268,26 +284,11 @@ namespace InscricaoCongresso.View
             }
         }
 
-        protected void btnImprimir_Click(object sender, EventArgs e)
+        protected void btnPrint_Click(object sender, EventArgs e)
         {
+           
 
-            try
-            {
-                PrintDocument pd = new PrintDocument();
-                pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
-                pd.Print();
-            }
-
-            catch 
-            {
-                
-            }
         }
 
-        private void pd_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            e.Graphics.DrawString("Imprindo em.NET", new Font("Arial", 10), Brushes.Black, 0, 0);
-            e.HasMorePages = false;
-        }
     }
 }

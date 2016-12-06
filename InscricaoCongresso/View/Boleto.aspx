@@ -20,8 +20,8 @@
             position: absolute;
             left: -12px;
             top: 15px;
-            height: 1468px;
-            bottom: -569px;
+            height: 1563px;
+            bottom: -1018px;
             width: 1119px;
             margin-left: 0px;
         }
@@ -40,7 +40,7 @@
         .auto-style7 {
             height: 58px;
             margin-left: 9px;
-            margin-top: 0px;
+            margin-top: 14px;
             align-items:center
         }
         .auto-style8 {
@@ -52,7 +52,7 @@
             height: 45px;
             margin-left: 9px;
             width: 1085px;
-            margin-top: 9px;
+            margin-top: 11px;
         }
         .auto-style10 {
             margin-left: 5px;
@@ -84,7 +84,7 @@
             margin-top: 0px;
         }
         .auto-style18 {
-            margin-top: 2px;
+            margin-top: 8px;
             margin-left: 9px;
             height: 47px;
         }
@@ -97,7 +97,7 @@
             margin-left: 0px;
         }
         .auto-style22 {
-            margin-top: 2px;
+            margin-top: 6px;
             margin-left: 9px;
             height: 48px;
         }
@@ -108,7 +108,7 @@
         .auto-style25 {
             margin-left: 14px;
             height: 38px;
-            margin-top: 4px;
+            margin-top: 6px;
         }
         .auto-style27 {
             margin-top: 0px;
@@ -120,14 +120,14 @@
         }
         .auto-style29 {
             height: 117px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
         .auto-style30 {
             margin-top: 0px;
             margin-left: 12px;
         }
         .auto-style31 {
-            margin-top: 7px;
+            margin-top: 10px;
             margin-left: 9px;
             height: 48px;
         }
@@ -139,10 +139,6 @@
         .auto-style33 {
             margin-left: 6px;
         }
-        .auto-style34 {
-            margin-left: 3px;
-            margin-top: 10px;
-        }
         .auto-style37 {
             float: left;
             height: 232px;
@@ -152,18 +148,18 @@
         }
         .auto-style38 {
             float: left;
-            height: 214px;
+            height: 239px;
             width: 768px;
             margin-left: 11px;
-            margin-top: 0px;
+            margin-top: 3px;
         }
         .auto-style39 {
             margin-left: 11px;
         }
         .auto-style40 {
             margin-left: 14px;
-            height: 114px;
-            margin-top: 2px;
+            height: 125px;
+            margin-top: 12px;
         }
         .auto-style41 {
             margin-top: 0px;
@@ -177,15 +173,26 @@
             margin-top: 0px;
             margin-left: 7px;
         }
+        .auto-style44 {
+            height: 59px;
+            margin-left: 9px;
+            margin-top: 0px;
+            align-items: center;
+        }
+        .auto-style45 {
+            margin-top: 5px;
+            margin-left: 9px;
+            height: 47px;
+        }
         </style>
 </head>
 <body class="body">
     <div class="auto-style3">
         <img src="../Image/BoletoBase.png" class="auto-style4"/>
         <form id="form1" runat="server" class="auto-style5">
-            <asp:Panel ID="pnlTopo" runat="server" Height="320px">
+            <asp:Panel ID="pnlTopo" runat="server" Height="343px">
             </asp:Panel>
-            <div class="auto-style7">
+            <div class="auto-style44">
                 <img alt="" class="auto-style8" src="../Image/Santander.png" />&nbsp;&nbsp;                
                 <asp:Label ID="lblNumBanco" runat="server" Width="84px" Font-Bold="True" Font-Size="X-Large" CssClass="auto-style10" Font-Names="Arial" Height="67%">033-7</asp:Label>
             &nbsp;&nbsp;
@@ -223,18 +230,18 @@
 
 
                 <br />
-                <asp:Label ID="lblNumDocumento" runat="server" Text="00000111" Font-Size="Large" Font-Names="Arial" Width="286px" Height="23px" CssClass="auto-style16"></asp:Label>
+                <asp:Label ID="lblNumDocumento" runat="server" Text="00000111" Font-Size="Large" Font-Names="Arial" Width="286px" Height="26px" CssClass="auto-style16"></asp:Label>
                                 
-                <asp:Label ID="lblCPF_CNPJ" runat="server" Text="60.747.318/0001-62" Font-Size="Large" Font-Names="Arial" Width="230px" Height="23px" CssClass="auto-style21"></asp:Label>
+                <asp:Label ID="lblCPF_CNPJ" runat="server" Text="60.747.318/0001-62" Font-Size="Large" Font-Names="Arial" Width="230px" Height="26px" CssClass="auto-style21"></asp:Label>
                                 
-                <asp:Label ID="lblVencimento" runat="server" Text="15/12/2022" Font-Size="Large" Font-Names="Arial" Width="231px" Height="23px" CssClass="auto-style21"></asp:Label>
+                <asp:Label ID="lblVencimento" runat="server" Text="15/12/2022" Font-Size="Large" Font-Names="Arial" Width="231px" Height="26px" CssClass="auto-style21"></asp:Label>
                                 
-                <asp:Label ID="lblValorDocumento" runat="server" Text="11.135,00" Font-Size="Large" Font-Names="Arial" Width="304px" Height="23px" CssClass="auto-style21"></asp:Label>
+                <asp:Label ID="lblValorDocumento" runat="server" Text="11.135,00" Font-Size="Large" Font-Names="Arial" Width="304px" Height="26px" CssClass="auto-style21"></asp:Label>
                 </div>
             
             
             
-            <div class="auto-style18">
+            <div class="auto-style45">
                 <asp:Label ID="lblT_Descontos" runat="server" Text="(-) Descontos/Abatimentos" Font-Size="Small" Font-Names="Arial" Height="19px" CssClass="auto-style23" Width="187px"></asp:Label>
 
 
@@ -285,8 +292,8 @@
             
             
             <div class="auto-style29">
-                <asp:Label ID="lblDemonstrativo" runat="server" Text="Demonstrativo" Font-Size="Small" Font-Names="Arial" Height="33px" CssClass="auto-style30" Width="910px"></asp:Label>
-                <asp:Label ID="lblAutenticacaoMecanica" runat="server" Text="Autenticação mecânica" Font-Size="Small" Font-Names="Arial" Height="33px" CssClass="auto-style30" Width="153px"></asp:Label>
+                <asp:Label ID="lblDemonstrativo" runat="server" Text="Demonstrativo" Font-Size="Small" Font-Names="Arial" Height="42px" CssClass="auto-style30" Width="910px"></asp:Label>
+                <asp:Label ID="lblAutenticacaoMecanica" runat="server" Text="Autenticação mecânica" Font-Size="Small" Font-Names="Arial" Height="42px" CssClass="auto-style30" Width="153px"></asp:Label>
                 <br />
                 <br />
                 <br />
@@ -324,7 +331,7 @@
                                 
                 <asp:Label ID="lblAgeCodBen" runat="server" Text="4042/1238798" Font-Size="Large" Font-Names="Arial" Width="285px" Height="23px" CssClass="auto-style21"></asp:Label>
                 </div>
-             <div class="auto-style18">
+             <div class="auto-style45">
                 <asp:Label ID="lblT_DataDocumento1" runat="server" Text="Data do documento" Font-Size="Small" Font-Names="Arial" Height="19px" CssClass="auto-style23" Width="182px"></asp:Label>
 
 
@@ -392,7 +399,7 @@
                 </div>
             <div class="auto-style38">
                                 
-                <asp:Label ID="lblInstrucoes" runat="server" Text="Instruções(Instruções de responsabilidade do Beneficiário. Qualquer dúvida sobre este boleto, contate o beneficiário)" Font-Size="Small" Font-Names="Arial" Width="100%" Height="22px"></asp:Label>
+                <asp:Label ID="lblInstrucoes" runat="server" Text="Instruções(Instruções de responsabilidade do Beneficiário. Qualquer dúvida sobre este boleto, contate o beneficiário)" Font-Size="Small" Font-Names="Arial" Width="100%" Height="22px" CssClass="auto-style14"></asp:Label>
                                 
                 <br />
                                 
@@ -432,23 +439,27 @@
                                 
                 <br />
                                 
+                <asp:Label ID="lblInstrucoes11" runat="server" Text="Pagável na rede bancária até o vencimento" Font-Size="Small" Font-Names="Arial" Width="98%" Height="20px" CssClass="auto-style39"></asp:Label>
+                                
+                <br />
+                                
             </div>
             <div class="auto-style37">
                 <asp:Label ID="lblT_Abatimento1" runat="server" Text="(-) Descontos/Abatimentos" Font-Size="Small" Font-Names="Arial" Height="19px" CssClass="auto-style43" Width="182px"></asp:Label>
                 <br />
-                <asp:Label ID="lblAbatimento1" runat="server" Text="XXXXXXXXX" Font-Size="Large" Font-Names="Arial" Width="288px" Height="24px" CssClass="auto-style21"></asp:Label>
+                <asp:Label ID="lblAbatimento1" runat="server" Text="XXXXXXXXX" Font-Size="Large" Font-Names="Arial" Width="288px" Height="32px" CssClass="auto-style21"></asp:Label>
                 <br />
                 <asp:Label ID="lblT_Deducoes1" runat="server" CssClass="auto-style43" Font-Names="Arial" Font-Size="Small" Height="22px" Text="(-) Outras deduções" Width="182px"></asp:Label>
                 <br />
-                <asp:Label ID="lblDeducoes1" runat="server" CssClass="auto-style21" Font-Names="Arial" Font-Size="Large" Height="22px" Text="XXXXXXXXX" Width="288px"></asp:Label>
+                <asp:Label ID="lblDeducoes1" runat="server" CssClass="auto-style21" Font-Names="Arial" Font-Size="Large" Height="25px" Text="XXXXXXXXX" Width="288px"></asp:Label>
                 <br />
                 <asp:Label ID="lblT_Mora1" runat="server" CssClass="auto-style43" Font-Names="Arial" Font-Size="Small" Height="21px" Text="(+) Mora/Multa" Width="182px"></asp:Label>
                 <br />
-                <asp:Label ID="lblMora1" runat="server" CssClass="auto-style21" Font-Names="Arial" Font-Size="Large" Height="22px" Text="XXXXXXXXX" Width="288px"></asp:Label>
+                <asp:Label ID="lblMora1" runat="server" CssClass="auto-style21" Font-Names="Arial" Font-Size="Large" Height="25px" Text="XXXXXXXXX" Width="288px"></asp:Label>
                 <br />
                 <asp:Label ID="lblT_Acrescimo1" runat="server" CssClass="auto-style43" Font-Names="Arial" Font-Size="Small" Height="25px" Text="(+) Outros acréscimos" Width="182px"></asp:Label>
                 <br />
-                <asp:Label ID="lblAcrescimo1" runat="server" CssClass="auto-style21" Font-Names="Arial" Font-Size="Large" Height="22px" Text="XXXXXXXXX" Width="288px"></asp:Label>                
+                <asp:Label ID="lblAcrescimo1" runat="server" CssClass="auto-style21" Font-Names="Arial" Font-Size="Large" Height="25px" Text="XXXXXXXXX" Width="288px"></asp:Label>                
                 <br />
                 <asp:Label ID="lblT_ValorCob1" runat="server" CssClass="auto-style43" Font-Names="Arial" Font-Size="Small" Height="21px" Text="(=) Valor cobrado" Width="182px"></asp:Label>
                 <br />
@@ -485,7 +496,7 @@
 
 
                 
-                <asp:Label ID="lblEndPagadorRodape" runat="server" Text="Av. Rubens de Mendonça, 157 - 78008-000 - Cuiabá/MT" Font-Size="Small" Font-Names="Arial" Height="16px" CssClass="auto-style27" Width="666px"></asp:Label>
+                <asp:Label ID="lblEndPagadorRodape" runat="server" Text="Av. Rubens de Mendonça, 157 - 78008-000 - Cuiabá/MT" Font-Size="Small" Font-Names="Arial" Height="28px" CssClass="auto-style27" Width="666px"></asp:Label>
 
 
                 
@@ -493,7 +504,7 @@
 
 
                 
-                <asp:Label ID="lblCodBaixa" runat="server" Text="Cód. baixa" Font-Size="Small" Font-Names="Arial" Height="24px" CssClass="auto-style42" Width="154px"></asp:Label>
+                <asp:Label ID="lblCodBaixa" runat="server" Text="Cód. baixa" Font-Size="Small" Font-Names="Arial" Height="19px" CssClass="auto-style42" Width="154px"></asp:Label>
 
 
                 
@@ -514,15 +525,23 @@
 
                 
             </div>
-            <asp:Panel ID="pnlCodeBar" runat="server" Height="70px" Width="1037px" CssClass="auto-style34" >
+            <asp:Panel ID="pnlCodeBar" runat="server" Height="90px" Width="1037px" CssClass="auto-style23" >
             </asp:Panel>
             <asp:Panel ID="pnlEnd" runat="server" Height="16px" Width="1060px" CssClass="auto-style43" >
                 <asp:Label ID="lblCorte" runat="server" Text="Corte na linha pontilhada" Font-Size="Small" Font-Names="Arial" Height="21px" CssClass="auto-style17" Width="1044px"></asp:Label>
             </asp:Panel>
 
-                
+        </p>
+    
+        <asp:Button ID="btnPrint" runat="server" OnClick="btnPrint_Click" Text="Imprimir Boleto" />
+            <!--script language="JavaScript">
+                window.matchMedia("min-width:2000px")
+                window.print()
+            </script-->
         </form>
     </div>
+
+    
 
 </body>
 </html>
