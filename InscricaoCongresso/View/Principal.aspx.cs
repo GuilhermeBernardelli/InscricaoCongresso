@@ -18,15 +18,16 @@ namespace InscricaoCongresso.View
         public static bool novoEndereco = true;
         public static string idioma = "BR", dac = "";
         public static string linhaDigitavel;
-        public static DateTime dataBase = new DateTime (1997, 10 , 07);
-        public static DateTime vencimento = new DateTime();
+        public static DateTime dataBase = new DateTime(1997, 10, 07);
+        // a configuração da data de vencimento deve ser incluida aqui no formato AAAA, MM, dddd
+        public static DateTime vencimento = new DateTime(2017, 07, 01);
         public static int nossoNum, numDocumento;
         Controle controle = new Controle();
         TRABALHOS trabalho = new TRABALHOS();
         AUTORES autor = new AUTORES();
         INSCRITOS inscricao = new INSCRITOS();
         ENDERECOS endereco = new ENDERECOS();
-        static BOLETOS boleto = new BOLETOS();        
+        static BOLETOS boleto = new BOLETOS();
 
         static List<ESTADOS> estados = new List<ESTADOS>();
         static List<PAISES> paises = new List<PAISES>();
@@ -37,9 +38,9 @@ namespace InscricaoCongresso.View
         protected void Page_Load(object sender, EventArgs e)
         {
             int count;
-                              
+
             if (!IsPostBack)
-            {                
+            {
                 logradouros = controle.pesquisaLogradouros();
                 count = 1;
                 ddlLogradouro.TabIndex.Equals(0);
@@ -129,50 +130,41 @@ namespace InscricaoCongresso.View
         {
             try
             {
-                //chama a renderização do código de barras a partir dos parametros de inscrição
-                //cria um boleto na base de dados concatenando informações do cedente, pagador, conta e valores
                 boleto = new BOLETOS();
                 controle.adicionarBoleto(boleto);
-                //boleto.id = boleto.id;
+
                 boleto.idInscritos = controle.pesquisaInscritos(txtCPF.Text).id;
-                //alterar o idValor posterior a definição da regra de negócio que estabele este
+                boleto.idCedente = 1;
                 boleto.idValor = 1;
-                boleto.idCedente = 1;   //id 1 representa o IAMSPE     
+
+                //rotinas para tratamento dos campos de data
+                string formatedEmissao = DateTime.Today.ToString("dd/MM/yyyy");
+                boleto.dataEmissao = formatedEmissao;
+                string formatedVencimento = vencimento.ToString("dd/MM/yyyy");
+                boleto.dataVencimento = formatedVencimento;
+
                 boleto.localPagamento = "QUALQUER BANCO ATÉ O VENCIMENTO";
                 boleto.especieDocumento = "R$";
 
-                string formatedEmissao = DateTime.Today.ToString("yyyy/MM/dd");
-                boleto.dataEmissao = formatedEmissao;
+                //Campo de informações a critério do cedente cada linha está limitada a 100 caracteres
+                boleto.informacoesL1 = "Teste do campo de informações";
+                boleto.informacoesL2 = "validação";
+                boleto.informacoesL3 = "linha 3";
+                boleto.informacoesL4 = "";
+                boleto.informacoesL5 = "linha 5";
+                boleto.informacoesL6 = "";
+                boleto.informacoesL7 = "";
+                boleto.informacoesL8 = "linha 8";
+                boleto.informacoesL9 = "";
+                boleto.informacoesL10 = "linha final";
 
-                vencimento = new DateTime(2008, 02, 01);
-                string formatedVencimento = vencimento.Date.ToString("yyyy/MM/dd");
-                boleto.dataVencimento = formatedVencimento;
-
-                nossoNum = controle.pesquisaBoletoAtualNum(boleto.idInscritos);
-                boleto.nossoNumero = nossoNum + 1;
-                numDocumento = controle.pesquisaBoletoAtualNum(boleto.idInscritos);
-                boleto.numeroDocumento = numDocumento + 1;
-                //numDocumento = 000000123;
-                //boleto.numeroDocumento = numDocumento;
-                //nossoNum = 000000123;
-                //boleto.nossoNumero = nossoNum;
-                boleto.informacoesDiversas = "Conteudo do campo instruções " +
-                                            "/n Utilizar o caracter 'barra n' para novas linhas " +
-                                            "/n limite atual em 10 linhas " +
-                                            "/n * " +
-                                            "/n * " +
-                                            "/n * " +
-                                            "/n * " +
-                                            "/n * " +
-                                            "/n * " +
-                                            "/n *";
-                //caso haja a inclusão de descontos ou abatimentos alterar e retirar comentario das linhas abaixo
-                //boleto.descontos = int;
-                //boleto.abatimento = int;                           
+                //INSERIR AQUI ROTINA DE TRATAMENTO PARA GERAR O NOSSO NÚMERO E NÚMERO DE DOCUMENTO
+                boleto.nossoNumero = 2;
+                boleto.numeroDocumento = 2;
 
                 boleto.codigoBarras = geraCodigoBarras();
                 boleto.linhaDigitavel = geraLinhaDigitavel();
-                
+
                 Session["pagador"] = boleto.idInscritos;
                 Session["boleto"] = boleto.linhaDigitavel;
                 Session["codBarras"] = boleto.codigoBarras;
@@ -203,23 +195,23 @@ namespace InscricaoCongresso.View
         private string geraCodigoBarras()
         {
             //inclusão do código do banco na primeira sessão do codigo de barras
-            string codBarraP1 = "", codBarraP2 = "", codAux="";
-            
+            string codBarraP1 = "", codBarraP2 = "", codAux = "";
+
             CEDENTES cedente = controle.pesquisaCedente("IAMSPE");
             //copia em um vetor de caracteres os 3 primeiros caracteres referentes ao código do banco 
             CONTAS contaCedente = controle.pesquisaContaPorId(cedente.idConta);
             char[] codigobanco = contaCedente.codigoBanco.ToCharArray();
             //adiciona a string esses 3 caracteres nas primeiras posições
-            for(int i = 0; i < 3; i++) 
+            for (int i = 0; i < 3; i++)
             {
                 codBarraP1 = codBarraP1 + codigobanco[i].ToString();
             }
             //adiciona a linha digitavel, na posição 4, o código da moeda corrente, 9 = real
             codBarraP1 = codBarraP1 + "9";
-            
+
             TimeSpan dias = vencimento - dataBase;
             //formata o valor a ser pago
-            VALORES valorBoleto = controle.pesquisaValorPorId(1);         
+            VALORES valorBoleto = controle.pesquisaValorPorId(1);
             string valor10Digitos = formataValor(10, (valorBoleto.valor).ToString());
 
             //formata o numero do codigo cedente            
@@ -245,7 +237,7 @@ namespace InscricaoCongresso.View
                 {
                     if (!aux[i].Equals(','))
                     {
-                        valor[count--] = aux[i];                        
+                        valor[count--] = aux[i];
                     }
                     else
                     {
@@ -272,10 +264,10 @@ namespace InscricaoCongresso.View
         }
 
         private string geraLinhaDigitavel()
-        {            
+        {
             //inclusão do código do banco na primeira sessão da linha digitável
             string linhaDigitavelP1 = "";
-            
+
             CEDENTES cedente = controle.pesquisaCedente("IAMSPE");
             CONTAS conta = controle.pesquisaContaPorId(cedente.idConta);
             VALORES valorBoleto = controle.pesquisaValorPorId(1);
@@ -326,7 +318,7 @@ namespace InscricaoCongresso.View
             }
             linhaDigitavelP3 = linhaDigitavelP3 + "0" + (cedente.CONTAS.carteira).ToString();
 
-            string div3 = calculoModulo10(linhaDigitavelP3) ;
+            string div3 = calculoModulo10(linhaDigitavelP3);
 
             string valorBoleto10Digitos = formataValor(10, (valorBoleto.valor).ToString());
             TimeSpan dias = vencimento - dataBase;
@@ -334,7 +326,7 @@ namespace InscricaoCongresso.View
             string linhaDigitavelP4 = (dias.Days).ToString() + valorBoleto10Digitos;
 
             //instancia final da linha digitavel
-            string linhaDigitavel = linhaDigitavelP1 + div1 + linhaDigitavelP2 + div2 + linhaDigitavelP3 + div3 + dac + linhaDigitavelP4;            
+            string linhaDigitavel = linhaDigitavelP1 + div1 + linhaDigitavelP2 + div2 + linhaDigitavelP3 + div3 + dac + linhaDigitavelP4;
             return linhaDigitavel;
         }
 
@@ -344,13 +336,13 @@ namespace InscricaoCongresso.View
 
             int calculo = 0, count = 2;
             char[] aux = valor.ToCharArray();
-            for(int i = aux.Count()-1; i >= 0; i--)
+            for (int i = aux.Count() - 1; i >= 0; i--)
             {
-                if(count%2 == 0)
+                if (count % 2 == 0)
                 {
                     count--;
                     int auxValue = Convert.ToInt32(aux[i].ToString()) * 2;
-                    if(auxValue >= 10)
+                    if (auxValue >= 10)
                     {
                         auxValue = auxValue - 9;
                     }
@@ -369,16 +361,16 @@ namespace InscricaoCongresso.View
             return digito;
         }
 
-        private string calculoModulo11(string Numero)           
+        private string calculoModulo11(string Numero)
         {
             string digitoVerificador = "";
             char[] Num = Numero.ToCharArray();
-            int calculo = 0, count = 0;            
-            for(int i = Num.Count()-1; i >= 0; i--)
+            int calculo = 0, count = 0;
+            for (int i = Num.Count() - 1; i >= 0; i--)
             {
                 calculo = calculo + (Convert.ToInt32(Num[i].ToString()) * (count + 2));
                 count++;
-                if(count > 7)
+                if (count > 7)
                 {
                     count = 0;
                 }
@@ -419,7 +411,7 @@ namespace InscricaoCongresso.View
             lblSituacaoFormacao.Text = "Situação atual dos estudos : ";
             lblLocalTrabalho.Text = "Local de trabalho/estudo : ";
             lblArea.Text = "Área profissional : ";
-            lblComplemento.Text = "Complemento";
+            lblComplemento.Text = "Complemento : ";
             lblBairro.Text = "Bairro : ";
             lblCep.Text = "CEP : ";
             lblEndereco.Text = "Endereço : ";
@@ -440,9 +432,10 @@ namespace InscricaoCongresso.View
             chkTrabalho.Text = "Sim";
             chkEstrangeiro.Text = "Residente no exterior";
 
-            lblTelefone1.Text = "Telefone principal";
-            lblTelefone2.Text = "Telefone secundário";
-            lblCelular.Text = "Celular";
+            lblTelefone1.Text = "Telefone principal : ";
+            lblTelefone2.Text = "Telefone secundário : ";
+            lblCelular.Text = "Celular : ";
+            lblAviso.Text = "Para 2ª via, preencher o campo CPF e clicar no botão \"Gerar Boleto de Pagamento\"";
         }
 
         protected void btnIngles_Click(object sender, ImageClickEventArgs e)
@@ -473,7 +466,7 @@ namespace InscricaoCongresso.View
             lblPaises.Text = "Select your Country : ";
             lblCidade.Text = "City : ";
             lblUF.Text = "State : ";
-            lblComplemento.Text = "Complement";
+            lblComplemento.Text = "Complement : ";
 
             pnlForm.GroupingText = "Personal data";
             pnlAutores.GroupingText = "Author(s)";
@@ -487,9 +480,10 @@ namespace InscricaoCongresso.View
             chkTrabalho.Text = "Yes";
             chkEstrangeiro.Text = "Lives outside of Brazil";
 
-            lblTelefone1.Text = "Main phone";
-            lblTelefone2.Text = "Secondary phone";
-            lblCelular.Text = "Cell phone";
+            lblTelefone1.Text = "Main phone : ";
+            lblTelefone2.Text = "Secondary phone : ";
+            lblCelular.Text = "Cell phone : ";
+            lblAviso.Text = "For 2nd way, fill in the Passport field and click on the button \"Generate Payment Ticket\"";
 
         }
 
@@ -521,7 +515,7 @@ namespace InscricaoCongresso.View
             lblPaises.Text = "Seleccionar el País : ";
             lblCidade.Text = "Ciudad : ";
             lblUF.Text = "Estado : ";
-            lblComplemento.Text = "Complemento";
+            lblComplemento.Text = "Complemento : ";
 
             pnlForm.GroupingText = "Datos personales";
             pnlAutores.GroupingText = "Autor(es)";
@@ -536,14 +530,15 @@ namespace InscricaoCongresso.View
             chkEstrangeiro.Text = "Vive fuera de Brasil";
 
 
-            lblTelefone1.Text = "Teléfono principal";
-            lblTelefone2.Text = "Teléfono secundário";
-            lblCelular.Text = "Celular";
+            lblTelefone1.Text = "Teléfono principal : ";
+            lblTelefone2.Text = "Teléfono secundário : ";
+            lblCelular.Text = "Celular : ";
+            lblAviso.Text = "Para la segunda vía, complete el campo Pasaporte y haga clic en el botón \"Generar el Pago de Boleto\"";
 
         }
         protected void btnAdicionar_Click(object sender, EventArgs e)
         {
-                   
+
 
             if (txtTituloTrabalho.Text.Equals("") || txtTrabalhoResumo.Text.Equals(""))
             {
@@ -701,25 +696,6 @@ namespace InscricaoCongresso.View
             //verifica a existencia de cadastro do usuário
             if (controle.pesquisaInscritos(txtCPF.Text) != null)
             {
-                //informa ao usuário a pré-existência de cadastro
-                string message1 = "";
-                //seleção da resposta para cada um dos idiomas utilizados pelo sistema
-                if (idioma.Equals("BR"))
-                {
-                    message1 = "Usuário já cadastrado, aguarde para a visualização do boleto de pagamento";
-                }
-                else if (idioma.Equals("ES"))
-                {
-                    message1 = "Usuario ya registrado, Espere a que la pantalla del boleto para el pago";
-                }
-                else if (idioma.Equals("EN"))
-                {
-                    message1 = "The user is already registered, wait for payment ticket to be displayed";
-                }
-                
-                //chamada de resposta em tela por pop up
-                ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message1 + "')", true);                
-                    
                 //verifica a existencia de boleto caso o usuário já cadastrado
                 boleto = controle.pesquisaBoletoUsuario(controle.pesquisaInscritos(txtCPF.Text).id);
                 //caso não haja boleto para usuário já cadastrado 
@@ -734,11 +710,11 @@ namespace InscricaoCongresso.View
                 {
                     Session["pagador"] = boleto.idInscritos;
                     Session["boleto"] = boleto.linhaDigitavel;
-                    Session["codBarras"] = boleto.codigoBarras;                                    
+                    Session["codBarras"] = boleto.codigoBarras;
 
                     Response.Redirect("Boleto.aspx");
                 }
-                
+
             }
             //Verifica se o usuário que esta gerando o boleto necessita do cadastro de trabalho para apresentação
             if (chkTrabalho.Checked)
@@ -839,7 +815,7 @@ namespace InscricaoCongresso.View
             }
 
             //verifica se já existe valor de endereço associado ao usuário
-            if (novoEndereco && (controle.pesquisaIdEndereco(txtEndereco.Text, txtNumeral.Text))==null)
+            if (novoEndereco && (controle.pesquisaIdEndereco(txtEndereco.Text, txtNumeral.Text)) == null)
             {
                 //Inicio da rotina de tentativa de captura de endereço
                 try
@@ -930,8 +906,8 @@ namespace InscricaoCongresso.View
                 controle.adicionarInscricao(inscricao);
                 //associa a inscrição ao endereço cadastrado, caso haja um
                 if (!novoEndereco)
-                {                    
-                    inscricao.idEndereco = controle.pesquisaIdEndereco(txtEndereco.Text, txtNumeral.Text).id;                        
+                {
+                    inscricao.idEndereco = controle.pesquisaIdEndereco(txtEndereco.Text, txtNumeral.Text).id;
                 }
                 //associa a inscrição ao trabalho cadastrado, caso haja um
                 if (!novo)
@@ -962,7 +938,7 @@ namespace InscricaoCongresso.View
                     txtArea.Text != "" && txtLocal.Text != "" && txtSituacao.Text != "" && txtEmail.Text != "" && txtTelefone1.Text != ""
                     && txtTelefone2.Text != "" && txtCelular.Text != "")
                 {
-                    inscricao.dataNascimento = Convert.ToDateTime(txtNascimento.Text);                    
+                    inscricao.dataNascimento = Convert.ToDateTime(txtNascimento.Text);
                     controle.atualizar();
                     gerarBoleto();
                 }
@@ -1001,8 +977,163 @@ namespace InscricaoCongresso.View
                     alertMessage4 = "There was a problem saving user data, All data is mandatory, the date field format must be DD / MM / YYYY";
                 }
                 ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage4 + "')", true);
-            }                                
-            
+            }
+
+        }
+
+        protected void ValidaNome(object sender, EventArgs e)
+        {
+            //Valida se o campo Nome possuí no minimo 8 digitos, se contem espaço, e se não possuí digitos numéricos
+            if (txtNome.Text.Length < 8 || !txtNome.Text.Contains(" ") || txtNome.Text.Where(c => char.IsNumber(c)).Count() > 0)
+            {
+                txtNome.Text = "";
+                string alertMessage = "";
+                if (idioma.Equals("BR"))
+                {
+                    alertMessage = "Nome com formato inválido, este campo não deve conter números, deve possuir entre 8 e 50 caracteres e ser composto pelo nome completo ou abreviado";
+                }
+                else if (idioma.Equals("ES"))
+                {
+                    alertMessage = "Nombre con formato incorrecto, este campo no debe contener números, debe tener entre 8 y 50 caracteres y debe ser compuesta por el nombre completo o abreviado";
+                }
+                else if (idioma.Equals("EN"))
+                {
+                    alertMessage = "Invalid format name, this field must not contain numbers, must be between 8 and 50 characters long and must consist of the full or abbreviated name";
+                }
+                ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage + "')", true);
+            }
+            else
+            {
+                txtNome.Text = txtNome.Text.ToUpper();
+            }
+        }
+
+        protected void ValidaCPF(object sender, EventArgs e)
+        {
+
+            //remove do valor digitado qualque espaço, . ou - 
+            string[] aux = txtCPF.Text.Split('.', '-', ' ');
+            txtCPF.Text = "";
+            foreach (string value in aux)
+            {
+                txtCPF.Text = txtCPF.Text + value;
+            }
+
+            string alertMessage = "";
+
+            //valida primeiramente se o usuário é brasileiro
+            if (idioma.Equals("BR"))
+            {
+                //Valida se o campo CPF possuí 11 digitos, e se não possuí letras
+                if (txtCPF.Text.Length != 11 || txtCPF.Text.Where(c => !char.IsNumber(c)).Count() > 0)
+                {
+                    txtCPF.Text = "";
+                    alertMessage = "CPF com formato inválido, este campo deve conter somente números e possuir 11 caracteres." 
+                        +" Se não possuir CPF selecione outro idioma e preencha este campo com o número do passaporte.";
+                    ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage + "')", true);
+                }
+                //passando pelas condições anteriores é efetuado o teste do digito verificador para CPF
+                else
+                {
+                    if (!calculaDigitoCPF(txtCPF.Text))
+                    {
+                        txtCPF.Text = "";
+                        alertMessage = "CPF com formato inválido,não aprovado na validação do digito verificador";
+                        ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage + "')", true);
+                    }
+                }
+            }
+            else
+            {
+                if (txtCPF.Text.Length < 6)
+                {
+                    if (idioma.Equals("ES"))
+                    {
+                        alertMessage = "Pasaporte con formato incorrecto, este campo no debe tener mas de 6 caracteres";
+                    }
+                    else if (idioma.Equals("EN"))
+                    {
+                        alertMessage = "Invalid format passport, this field must be more then 6 characters long";
+                    }
+                    ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage + "')", true);
+                }
+            }
+        }
+
+        private bool calculaDigitoCPF(string cpf)
+        {
+            char[] validador = cpf.ToCharArray();
+            int calculo = 0, count = 10;
+            //inicio da rotina pra validação do digito 10 do CPF
+            for(int i = 0; i < 9; i++)
+            {
+                calculo = calculo + (Convert.ToInt32(validador[i].ToString()) * count);
+                count--;
+            }
+            int divisão = calculo / 11;
+            divisão = calculo - (divisão * 11);
+            if(divisão < 2)
+            {
+                if(validador[9]!= '0')
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                divisão = 11 - divisão;
+                if (validador[9] != Convert.ToChar(divisão.ToString()))
+                {
+                    return false;
+                }
+            }
+            //inicio da rotina para a validação do digito final do CPF
+            calculo = 0;
+            count = 11;
+            for (int i = 0; i < 10; i++)
+            {
+                calculo = calculo + (Convert.ToInt32(validador[i].ToString()) * count);
+                count--;
+            }
+            divisão = calculo / 11;
+            divisão = calculo - (divisão * 11);
+            if (divisão < 2)
+            {
+                if (validador[10] != '0')
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                divisão = 11 - divisão;
+                if (validador[10] != Convert.ToChar(divisão.ToString()))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        protected void ValidaNacionalidade(object sender, EventArgs e)
+        {
+            if(txtNacional.Text.Length < 3)
+            {
+                string alertMessage1 = "";
+                if (idioma.Equals("BR"))
+                {
+                    alertMessage1 = "O campo nacionalidade deve possuir no minimo a abreviatura do país de origem com 3 caracteres";
+                }
+                else if (idioma.Equals("ES"))
+                {
+                    alertMessage1 = "El campo de la nacionalidad debe tener al menos la abreviatura del país de origen con 3 caracteres";
+                }
+                else if (idioma.Equals("EN"))
+                {
+                    alertMessage1 = "The nationality field must have at least the abbreviation of the country of origin with 3 characters";
+                }
+                ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage1 + "')", true);
+            }
         }
 
         protected void chkEstrangeiro_CheckedChanged(object sender, EventArgs e)

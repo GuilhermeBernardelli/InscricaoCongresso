@@ -43,7 +43,14 @@ namespace InscricaoCongresso.Model
             return (from trabalhos in entityModel.TRABALHOS
                     where (trabalhos.titulo.Equals(titulo))
                     select trabalhos.id).SingleOrDefault();            
-        }   
+        }
+
+        public INSCRITOS selectInscritosPorId(int id)
+        {
+            return (from inscritos in entityModel.INSCRITOS
+                    where (inscritos.id == id)
+                    select inscritos).SingleOrDefault();
+        }
 
         public int selectBoletoAtualNum(int id)
         {
@@ -106,6 +113,41 @@ namespace InscricaoCongresso.Model
             return (from contas in entityModel.CONTAS
                     where (contas.id == id)
                     select (contas)).SingleOrDefault();
+        }
+
+        public LOGRADOUROS selectLogradouro(int id)
+        {
+            return (from logradouro in entityModel.LOGRADOUROS
+                    where logradouro.id == id
+                    select logradouro).SingleOrDefault();
+        }
+
+        public CIDADES selectCidade(int id)
+        {
+            return (from cidade in entityModel.CIDADES
+                    where cidade.id == id
+                    select cidade).SingleOrDefault();
+        }
+
+        public PAISES selectPais(int id)
+        {
+            return (from pais in entityModel.PAISES
+                    where pais.id == id
+                    select pais).SingleOrDefault();
+        }
+
+        public ESTADOS selectEstado(int id)
+        {
+            return (from estado in entityModel.ESTADOS
+                    where estado.id == id
+                    select estado).SingleOrDefault();
+        }
+
+        public ENDERECOS selectEndereco(int id)
+        {
+            return (from endereco in entityModel.ENDERECOS
+                    where endereco.id == id
+                    select endereco).SingleOrDefault();
         }
 
         public VALORES selectValor(int id)

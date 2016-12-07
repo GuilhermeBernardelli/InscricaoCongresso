@@ -35,16 +35,20 @@
             <asp:ImageButton ID="btnEspanol" runat="server" ImageUrl="~/Image/icoES.jpg" Width="25px" OnClick="btnEspanol_Click" />
             <asp:ImageButton ID="btnIngles" runat="server" ImageUrl="~/Image/icoEN.jpg" Width="25px" OnClick="btnIngles_Click" />
         </asp:Panel>
-        <asp:Panel ID="Panel3" runat="server" Height="65px">
+        <asp:Panel ID="pnlTopo" runat="server" Height="94px">
             <asp:Label ID="lblTitulo" runat="server" CssClass="preenchimento" Font-Bold="True" Font-Names="Verdana" Font-Size="XX-Large" Text="REALIZAR INSCRIÇÃO" Width="100%" Height="42px" ForeColor="#006600"></asp:Label>
+            <br />
+            <br />
+            <asp:Label ID="lblAviso" runat="server" Text="Para 2ª via, preencher o campo CPF e clicar no botão &quot;Gerar Boleto de Pagamento&quot;"></asp:Label>
+            <br />
             </asp:Panel>
         <asp:Panel ID="pnlForm" runat="server" Height="138px" Width="100%" HorizontalAlign="Left" BorderColor="#006600" GroupingText="Dados pessoais">
             <br />
 &nbsp;<asp:Label ID="lblNome" runat="server" Text="Nome : "></asp:Label>
-            <asp:TextBox ID="txtNome" runat="server" Width="483px"></asp:TextBox>
+            <asp:TextBox ID="txtNome" runat="server" Width="483px" AutoPostBack="True" OnTextChanged="ValidaNome"></asp:TextBox>
 &nbsp;
             <asp:Label ID="lblCpf" runat="server" Text="CPF : "></asp:Label>
-            <asp:TextBox ID="txtCPF" runat="server" Width="168px"></asp:TextBox>
+            <asp:TextBox ID="txtCPF" runat="server" Width="168px" AutoPostBack="True" OnTextChanged="ValidaCPF"></asp:TextBox>
             <br />
             <br />
             &nbsp;<asp:Label ID="lblRgRne" runat="server" Text="RG/RNE : "></asp:Label>
@@ -54,7 +58,7 @@
             <asp:TextBox ID="txtNascimento" runat="server" Width="140px" TextMode="DateTime"></asp:TextBox>
 &nbsp;
             <asp:Label ID="lblNacionalidade" runat="server" Text="Nacionalidade : "></asp:Label>
-            <asp:TextBox ID="txtNacional" runat="server" Width="150px"></asp:TextBox>
+            <asp:TextBox ID="txtNacional" runat="server" Width="150px" AutoPostBack="True" OnTextChanged="ValidaNacionalidade"></asp:TextBox>
             <br />
             <br />
             

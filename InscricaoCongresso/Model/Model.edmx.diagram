@@ -5,17 +5,17 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="019a25f3d6d747b6affa6db516a7911f" Name="Diagram1">
-        <EntityTypeShape EntityType="SEMINARIOModel.AUTORES" Width="1.5" PointX="7.5" PointY="10.625" />
-        <EntityTypeShape EntityType="SEMINARIOModel.CEDENTES" Width="1.5" PointX="10.5" PointY="5.375" />
-        <EntityTypeShape EntityType="SEMINARIOModel.CIDADES" Width="1.5" PointX="3" PointY="5.75" />
-        <EntityTypeShape EntityType="SEMINARIOModel.CONTAS" Width="1.5" PointX="8.25" PointY="0.75" />
-        <EntityTypeShape EntityType="SEMINARIOModel.ENDERECOS" Width="1.5" PointX="5.25" PointY="4.875" />
-        <EntityTypeShape EntityType="SEMINARIOModel.ESTADOS" Width="1.5" PointX="0.75" PointY="5.875" />
-        <EntityTypeShape EntityType="SEMINARIOModel.INSCRITOS" Width="1.5" PointX="7.5" PointY="4.375" />
-        <EntityTypeShape EntityType="SEMINARIOModel.LOGRADOUROS" Width="1.5" PointX="3" PointY="9.125" />
-        <EntityTypeShape EntityType="SEMINARIOModel.PAISES" Width="1.5" PointX="3" PointY="2.625" />
-        <EntityTypeShape EntityType="SEMINARIOModel.TRABALHOS" Width="1.5" PointX="5.25" PointY="1.75" />
-        <EntityTypeShape EntityType="SEMINARIOModel.VALORES" Width="1.5" PointX="10.5" PointY="2.5" />
+        <EntityTypeShape EntityType="SEMINARIOModel.AUTORES" Width="1.5" PointX="7.5" PointY="11.25" />
+        <EntityTypeShape EntityType="SEMINARIOModel.CEDENTES" Width="1.5" PointX="10.5" PointY="6" />
+        <EntityTypeShape EntityType="SEMINARIOModel.CIDADES" Width="1.5" PointX="3" PointY="6.375" />
+        <EntityTypeShape EntityType="SEMINARIOModel.CONTAS" Width="1.5" PointX="8.25" PointY="1.375" />
+        <EntityTypeShape EntityType="SEMINARIOModel.ENDERECOS" Width="1.5" PointX="5.25" PointY="5.5" />
+        <EntityTypeShape EntityType="SEMINARIOModel.ESTADOS" Width="1.5" PointX="0.75" PointY="6.375" />
+        <EntityTypeShape EntityType="SEMINARIOModel.INSCRITOS" Width="1.5" PointX="7.5" PointY="5" />
+        <EntityTypeShape EntityType="SEMINARIOModel.LOGRADOUROS" Width="1.5" PointX="3" PointY="3.125" />
+        <EntityTypeShape EntityType="SEMINARIOModel.PAISES" Width="1.5" PointX="3" PointY="9.75" />
+        <EntityTypeShape EntityType="SEMINARIOModel.TRABALHOS" Width="1.5" PointX="5.25" PointY="2.375" />
+        <EntityTypeShape EntityType="SEMINARIOModel.VALORES" Width="1.5" PointX="10.5" PointY="3.125" />
         <AssociationConnector Association="SEMINARIOModel.FK__AUTORES__idTraba__3D5E1FD2" />
         <AssociationConnector Association="SEMINARIOModel.fk_contas_cedentes" />
         <AssociationConnector Association="SEMINARIOModel.fk_endereco_cedentes" />
@@ -25,7 +25,7 @@
         <AssociationConnector Association="SEMINARIOModel.fk_endereco_inscritos" />
         <AssociationConnector Association="SEMINARIOModel.fk_logradouro_enderecos" />
         <AssociationConnector Association="SEMINARIOModel.fk_trabalhos_inscritos" />
-        <EntityTypeShape EntityType="SEMINARIOModel.BOLETOS" Width="1.5" PointX="12.75" PointY="3.5" />
+        <EntityTypeShape EntityType="SEMINARIOModel.BOLETOS" Width="1.5" PointX="12.75" PointY="3" />
         <AssociationConnector Association="SEMINARIOModel.FK__BOLETOS__idInscr__403A8C7D" />
         <AssociationConnector Association="SEMINARIOModel.fk_cedente_boletos" />
         <AssociationConnector Association="SEMINARIOModel.fk_valor_boletos" />

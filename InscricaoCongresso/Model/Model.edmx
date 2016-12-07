@@ -27,14 +27,25 @@
           <Property Name="dataPagamento" Type="varchar" MaxLength="10" />
           <Property Name="dataVencimento" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="numeroDocumento" Type="int" />
-          <Property Name="informacoesDiversas" Type="varchar" MaxLength="300" />
           <Property Name="descontos" Type="numeric" Precision="7" Scale="2" />
           <Property Name="abatimento" Type="numeric" Precision="7" Scale="2" />
           <Property Name="idValor" Type="int" Nullable="false" />
           <Property Name="idCedente" Type="int" Nullable="false" />
           <Property Name="idInscritos" Type="int" Nullable="false" />
           <Property Name="nossoNumero" Type="int" Nullable="false" />
-          <Property Name="codigoBarras" Type="varchar" MaxLength="44" Nullable="false" />
+          <Property Name="codigoBarras" Type="varchar" MaxLength="150" />
+          <Property Name="informacoesL1" Type="varchar" MaxLength="120" />
+          <Property Name="informacoesL2" Type="varchar" MaxLength="120" />
+          <Property Name="informacoesL3" Type="varchar" MaxLength="120" />
+          <Property Name="informacoesL4" Type="varchar" MaxLength="120" />
+          <Property Name="informacoesL5" Type="varchar" MaxLength="120" />
+          <Property Name="informacoesL6" Type="varchar" MaxLength="120" />
+          <Property Name="informacoesL7" Type="varchar" MaxLength="120" />
+          <Property Name="informacoesL8" Type="varchar" MaxLength="120" />
+          <Property Name="informacoesL9" Type="varchar" MaxLength="120" />
+          <Property Name="informacoesL10" Type="varchar" MaxLength="120" />
+          <Property Name="acrescimo" Type="int" />
+          <Property Name="multa" Type="int" />
         </EntityType>
         <EntityType Name="CEDENTES">
           <Key>
@@ -676,14 +687,25 @@
           <Property Name="dataPagamento" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="dataVencimento" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="numeroDocumento" Type="Int32" />
-          <Property Name="informacoesDiversas" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="descontos" Type="Decimal" Precision="7" Scale="2" />
           <Property Name="abatimento" Type="Decimal" Precision="7" Scale="2" />
           <Property Name="idValor" Type="Int32" Nullable="false" />
           <Property Name="idCedente" Type="Int32" Nullable="false" />
           <Property Name="idInscritos" Type="Int32" Nullable="false" />
           <Property Name="nossoNumero" Type="Int32" Nullable="false" />
-          <Property Name="codigoBarras" Type="String" Nullable="false" MaxLength="44" FixedLength="false" Unicode="false" />
+          <Property Name="codigoBarras" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesL1" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesL2" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesL3" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesL4" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesL5" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesL6" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesL7" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesL8" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesL9" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="informacoesL10" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="acrescimo" Type="Int32" />
+          <Property Name="multa" Type="Int32" />
           <NavigationProperty Name="INSCRITOS" Relationship="SEMINARIOModel.FK__BOLETOS__idInscr__403A8C7D" FromRole="BOLETOS" ToRole="INSCRITOS" />
           <NavigationProperty Name="CEDENTES" Relationship="SEMINARIOModel.fk_cedente_boletos" FromRole="BOLETOS" ToRole="CEDENTES" />
           <NavigationProperty Name="VALORES" Relationship="SEMINARIOModel.fk_valor_boletos" FromRole="BOLETOS" ToRole="VALORES" />
@@ -857,6 +879,18 @@
           <EntitySetMapping Name="BOLETOS">
             <EntityTypeMapping TypeName="SEMINARIOModel.BOLETOS">
               <MappingFragment StoreEntitySet="BOLETOS">
+                <ScalarProperty Name="multa" ColumnName="multa" />
+                <ScalarProperty Name="acrescimo" ColumnName="acrescimo" />
+                <ScalarProperty Name="informacoesL10" ColumnName="informacoesL10" />
+                <ScalarProperty Name="informacoesL9" ColumnName="informacoesL9" />
+                <ScalarProperty Name="informacoesL8" ColumnName="informacoesL8" />
+                <ScalarProperty Name="informacoesL7" ColumnName="informacoesL7" />
+                <ScalarProperty Name="informacoesL6" ColumnName="informacoesL6" />
+                <ScalarProperty Name="informacoesL5" ColumnName="informacoesL5" />
+                <ScalarProperty Name="informacoesL4" ColumnName="informacoesL4" />
+                <ScalarProperty Name="informacoesL3" ColumnName="informacoesL3" />
+                <ScalarProperty Name="informacoesL2" ColumnName="informacoesL2" />
+                <ScalarProperty Name="informacoesL1" ColumnName="informacoesL1" />
                 <ScalarProperty Name="codigoBarras" ColumnName="codigoBarras" />
                 <ScalarProperty Name="nossoNumero" ColumnName="nossoNumero" />
                 <ScalarProperty Name="idInscritos" ColumnName="idInscritos" />
@@ -864,7 +898,6 @@
                 <ScalarProperty Name="idValor" ColumnName="idValor" />
                 <ScalarProperty Name="abatimento" ColumnName="abatimento" />
                 <ScalarProperty Name="descontos" ColumnName="descontos" />
-                <ScalarProperty Name="informacoesDiversas" ColumnName="informacoesDiversas" />
                 <ScalarProperty Name="numeroDocumento" ColumnName="numeroDocumento" />
                 <ScalarProperty Name="dataVencimento" ColumnName="dataVencimento" />
                 <ScalarProperty Name="dataPagamento" ColumnName="dataPagamento" />

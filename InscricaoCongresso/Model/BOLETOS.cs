@@ -22,7 +22,6 @@ namespace InscricaoCongresso.Model
         public string dataPagamento { get; set; }
         public string dataVencimento { get; set; }
         public Nullable<int> numeroDocumento { get; set; }
-        public string informacoesDiversas { get; set; }
         public Nullable<decimal> descontos { get; set; }
         public Nullable<decimal> abatimento { get; set; }
         public int idValor { get; set; }
@@ -30,6 +29,18 @@ namespace InscricaoCongresso.Model
         public int idInscritos { get; set; }
         public int nossoNumero { get; set; }
         public string codigoBarras { get; set; }
+        public string informacoesL1 { get; set; }
+        public string informacoesL2 { get; set; }
+        public string informacoesL3 { get; set; }
+        public string informacoesL4 { get; set; }
+        public string informacoesL5 { get; set; }
+        public string informacoesL6 { get; set; }
+        public string informacoesL7 { get; set; }
+        public string informacoesL8 { get; set; }
+        public string informacoesL9 { get; set; }
+        public string informacoesL10 { get; set; }
+        public Nullable<int> acrescimo { get; set; }
+        public Nullable<int> multa { get; set; }
     
         public virtual INSCRITOS INSCRITOS { get; set; }
         public virtual CEDENTES CEDENTES { get; set; }

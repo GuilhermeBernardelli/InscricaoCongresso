@@ -1,26 +1,122 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using InscricaoCongresso.Control;
+using InscricaoCongresso.Model;
+using NReco.ImageGenerator;
+using System;
 using System.Drawing.Printing;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace InscricaoCongresso.View
 {
     public partial class Boleto : System.Web.UI.Page
     {
-        public string codBarras = "";
+        BOLETOS boleto = new BOLETOS();
+        CEDENTES cedente = new CEDENTES();
+        CONTAS conta = new CONTAS();
+        VALORES valor = new VALORES();
+        INSCRITOS inscritos = new INSCRITOS();
+        Controle controle = new Controle();
+        ENDERECOS endereco = new ENDERECOS();
+        LOGRADOUROS logradouro = new LOGRADOUROS();
+        PAISES pais = new PAISES();
+        CIDADES cidade = new CIDADES();
+        ESTADOS estado = new ESTADOS();
+
+        public static System.Drawing.Color preto = System.Drawing.Color.Black;
+        public static System.Drawing.Color branco = System.Drawing.Color.White;
+
+        public static string codBarras = "";
+        public static string linhaDigitavel = "";
+        public static int idPagador = 0;
+
         protected void Page_Load(object sender, EventArgs e)
-        {
+        {   
+            idPagador = Convert.ToInt32(Session["pagador"]);
+            codBarras = Session["codBarras"].ToString();
+            linhaDigitavel = (Session["boleto"]).ToString();
+
+            boleto = controle.pesquisaBoletoUsuario(idPagador);
+            inscritos = controle.pesquisaInscritosId(idPagador);
+            cedente = controle.pesquisaCedente("IAMSPE");
+            valor = controle.pesquisaValorPorId(boleto.idValor);
+            conta = controle.pesquisaContaPorId(cedente.idConta);
+                        
+            string auxiliar = "";
+            foreach (char value in linhaDigitavel)
+            {
+                auxiliar += value;
+                if (auxiliar.Length == 5 || auxiliar.Length == 17)
+                {
+                    auxiliar += ".";
+                }
+                else if (auxiliar.Length == 11 || auxiliar.Length == 24 || auxiliar.Length == 30 || auxiliar.Length == 37 || auxiliar.Length == 39)
+                {
+                    auxiliar += " ";
+                }              
+            }
+            //"03399.01233 45600.000009 00000.001024 3 68420000018300"
+            //preenchimento das labels sem tratamento nas bases de dados ou páginas anteriores
+            lblAceite1.Text = "S";
+            lblEspecieDoc.Text = "DM";
+            lblQnt.Text = "1";
             
-            //codBarras = Session["boleto"].ToString();
-            //functionCodeBar(codBarras);
+            //preenchimento das labels com tratamento ou formatação anterior a renderização nesta página
+            lblLinhaDigitavel.Text = lblLinhaDigitavel1.Text = auxiliar;
+            lblAgeCodBen.Text = lblAgeCodBen1.Text = conta.agenciaNumero + "/" + cedente.codigoCedente;
+            lblCPF_CNPJ.Text = Convert.ToUInt64(cedente.cnpjCedente).ToString(@"00\.000\.000\/0000\-00");
+            lblNumBanco.Text = lblNumBanco1.Text = Convert.ToUInt64(conta.codigoBanco).ToString(@"000\-0");
+            lblNossoNum.Text = lblNossoNum1.Text = Convert.ToUInt64(boleto.nossoNumero).ToString(@"000000000000\-0");
+            lblNumDocumento.Text = lblNumDocumento1.Text = Convert.ToUInt64(boleto.numeroDocumento).ToString(@"00000000");
+            lblPagadorRodape.Text = inscritos.nome + " - CPF/CNPJ: " + Convert.ToUInt64(inscritos.cpf).ToString(@"000\.000\.000\-00");
+            lblPagador.Text = inscritos.nome + " - " + Convert.ToUInt64(inscritos.cpf).ToString(@"000\.000\.000\-00");
+            lblBeneficiarioRodape.Text = cedente.nomeCedente + " - " + cedente.cnpjCedente;
+            //VALOR DIGITO 19 NÃO IDENTIFICADO O PORQUE OU MÉTODO DE USO
+            lblCarteira.Text = conta.carteira.ToString() + "-19";
             
-            lblLinhaDigitavel.Text = lblLinhaDigitavel1.Text = "23792.37205 60037.106394 74008.145000 3 69940000000000";
-            functionCodeBar("23793699400000000002372060037106397400814500");
+            //pesquisa para tratamento para representação do endereço no boleto
+            endereco = controle.pesquisaEnderecoPorId(inscritos.idEndereco);
+            //tratamento para endereços no Brasil
+            if (endereco.idPaises == 1)
+            {
+                logradouro = controle.pesquisaLogradouroId(endereco.idLogradouro);
+                cidade = controle.pesquisaCidadeId(endereco.idCidade);
+                estado = controle.pesquisaEstadoId(cidade.idEstado);
+
+                lblEndPagador.Text = lblEndPagadorRodape.Text = logradouro.siglaLogradouro + endereco.nomeEndereco + ", " + endereco.numeroEndereco + " - " + endereco.cep + " - " + cidade.nomeCidade + "/" + estado.siglaEstado;
+            }
+            //tratamento para endereços fora do país
+            else
+            {
+                pais = controle.pesquisaPaisId(Convert.ToInt32(endereco.idPaises));
+                lblEndPagador.Text = lblEndPagadorRodape.Text = endereco.nomeEndereco + ", " + endereco.numeroEndereco + " - " + endereco.cep + " - " + cidade.nomeCidade + " - " + pais.nomePais;
+            }
+
+            //preenchimento das labels sem tratamento ou préviamente tratadas 
+            lblBeneficiario.Text = lblBeneficiario1.Text = cedente.nomeCedente;
+            lblDeducoes.Text = lblDeducoes1.Text = boleto.abatimento.ToString();
+            lblDescontos.Text = lblDescontos1.Text = boleto.descontos.ToString();
+            lblEspecie.Text = lblEspecie1.Text = boleto.especieDocumento;
+            lblAcrescimo.Text = lblAcrescimo1.Text = boleto.acrescimo.ToString();
+            lblMulta.Text = lblMulta1.Text = boleto.multa.ToString();
+            lblValorDocumento.Text = lblValorDocumento1.Text = valor.valor.ToString();
+            lblLocal.Text = boleto.localPagamento;
+            lblVencimento.Text = lblVencimento1.Text = boleto.dataVencimento;
+            lblDataDocumento1.Text = boleto.dataEmissao;
+                      
+            //contrução do campo de informações
+            lblInstrucoesLinha1.Text = boleto.informacoesL1;
+            lblInstrucoesLinha2.Text = boleto.informacoesL2;
+            lblInstrucoesLinha3.Text = boleto.informacoesL3;
+            lblInstrucoesLinha4.Text = boleto.informacoesL4;
+            lblInstrucoesLinha5.Text = boleto.informacoesL5;
+            lblInstrucoesLinha6.Text = boleto.informacoesL6;
+            lblInstrucoesLinha7.Text = boleto.informacoesL7;
+            lblInstrucoesLinha8.Text = boleto.informacoesL8;
+            lblInstrucoesLinha9.Text = boleto.informacoesL9;
+            lblInstrucoesLinha10.Text = boleto.informacoesL10;
+
+            //chamada para a renderização do código de barras
+            functionCodeBar(codBarras);
+            btnPrint_Click(sender, e);
         }
         public void functionCodeBar(string numero)
         {
@@ -42,7 +138,9 @@ namespace InscricaoCongresso.View
             barragrossa.ImageUrl = "~/Image/p.png";
             Label pretoGrosso = new Label()
             {
-                Width = 4                
+                //BackColor = preto,
+                Width = 4,
+                Height = 90                     
             };
             pretoGrosso.Controls.Add(barragrossa);
             pnlCodeBar.Controls.Add(pretoGrosso);
@@ -54,7 +152,9 @@ namespace InscricaoCongresso.View
             barrafina.ImageUrl = "~/Image/p_f.png";
             Label pretoFino = new Label()
             {
-                Width = 2
+                //BackColor = System.Drawing.Color.Black,
+                Width = 2,
+                Height = 90
             };
             pretoFino.Controls.Add(barrafina);
             pnlCodeBar.Controls.Add(pretoFino);
@@ -65,7 +165,8 @@ namespace InscricaoCongresso.View
             brancogrosso.ImageUrl = "~/Image/b.png";
             Label brancoGrosso = new Label()
             {
-                Width = 4
+                Width = 4,
+                Height = 90
             };
             brancoGrosso.Controls.Add(brancogrosso);
             pnlCodeBar.Controls.Add(brancoGrosso);
@@ -77,7 +178,8 @@ namespace InscricaoCongresso.View
             brancafina.ImageUrl = "~/Image/b_f.png";
             Label brancoFino = new Label()
             {
-                Width = 2
+                Width = 2,
+                Height = 90
             };
             brancoFino.Controls.Add(brancafina);
             pnlCodeBar.Controls.Add(brancoFino);
@@ -284,11 +386,18 @@ namespace InscricaoCongresso.View
             }
         }
 
+
         protected void btnPrint_Click(object sender, EventArgs e)
-        {
-           
+        {            
+            Response.Write("<script>window.print();</script>");
+        }   
+        public void print_this(object sender, PrintPageEventArgs ev)
+        {/*
+            // Draw a picture.
+            ev.Graphics.DrawImage(, ev.Graphics.VisibleClipBounds);
 
-        }
-
+            // Indicate that this is the last page to print.
+            ev.HasMorePages = false;*/
+        }               
     }
 }

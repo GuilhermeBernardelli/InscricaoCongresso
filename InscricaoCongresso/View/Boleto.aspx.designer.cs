@@ -103,13 +103,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblBeneficiario;
         
         /// <summary>
-        /// lblAgeCodBen0 control.
+        /// lblAgeCodBen control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAgeCodBen0;
+        protected global::System.Web.UI.WebControls.Label lblAgeCodBen;
         
         /// <summary>
         /// lblEspecie control.
@@ -256,49 +256,49 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblT_Valor;
         
         /// <summary>
-        /// lblCPF_CNPJ0 control.
+        /// lblDescontos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCPF_CNPJ0;
+        protected global::System.Web.UI.WebControls.Label lblDescontos;
         
         /// <summary>
-        /// lblVencimento0 control.
+        /// lblDeducoes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblVencimento0;
+        protected global::System.Web.UI.WebControls.Label lblDeducoes;
         
         /// <summary>
-        /// lblValorDocumento0 control.
+        /// lblMulta control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblValorDocumento0;
+        protected global::System.Web.UI.WebControls.Label lblMulta;
         
         /// <summary>
-        /// lblValorDocumento1 control.
+        /// lblAcrescimo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblValorDocumento1;
+        protected global::System.Web.UI.WebControls.Label lblAcrescimo;
         
         /// <summary>
-        /// lblValorDocumento2 control.
+        /// lblValorCobrado control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblValorDocumento2;
+        protected global::System.Web.UI.WebControls.Label lblValorCobrado;
         
         /// <summary>
         /// lblT_Pagador control.
@@ -310,13 +310,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblT_Pagador;
         
         /// <summary>
-        /// lblIdPagador control.
+        /// lblPagador control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblIdPagador;
+        protected global::System.Web.UI.WebControls.Label lblPagador;
         
         /// <summary>
         /// lblEndPagador control.
@@ -445,13 +445,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblBeneficiario1;
         
         /// <summary>
-        /// lblAgeCodBen control.
+        /// lblAgeCodBen1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAgeCodBen;
+        protected global::System.Web.UI.WebControls.Label lblAgeCodBen1;
         
         /// <summary>
         /// lblT_DataDocumento1 control.
@@ -661,13 +661,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblValor1;
         
         /// <summary>
-        /// Label22 control.
+        /// lblValorDocumento1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label22;
+        protected global::System.Web.UI.WebControls.Label lblValorDocumento1;
         
         /// <summary>
         /// lblInstrucoes control.
@@ -679,94 +679,94 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblInstrucoes;
         
         /// <summary>
-        /// lblInstrucoes1 control.
+        /// lblInstrucoesLinha1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstrucoes1;
+        protected global::System.Web.UI.WebControls.Label lblInstrucoesLinha1;
         
         /// <summary>
-        /// lblInstrucoes2 control.
+        /// lblInstrucoesLinha2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstrucoes2;
+        protected global::System.Web.UI.WebControls.Label lblInstrucoesLinha2;
         
         /// <summary>
-        /// lblInstrucoes3 control.
+        /// lblInstrucoesLinha3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstrucoes3;
+        protected global::System.Web.UI.WebControls.Label lblInstrucoesLinha3;
         
         /// <summary>
-        /// lblInstrucoes4 control.
+        /// lblInstrucoesLinha4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstrucoes4;
+        protected global::System.Web.UI.WebControls.Label lblInstrucoesLinha4;
         
         /// <summary>
-        /// lblInstrucoes5 control.
+        /// lblInstrucoesLinha5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstrucoes5;
+        protected global::System.Web.UI.WebControls.Label lblInstrucoesLinha5;
         
         /// <summary>
-        /// lblInstrucoes6 control.
+        /// lblInstrucoesLinha6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstrucoes6;
+        protected global::System.Web.UI.WebControls.Label lblInstrucoesLinha6;
         
         /// <summary>
-        /// lblInstrucoes8 control.
+        /// lblInstrucoesLinha7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstrucoes8;
+        protected global::System.Web.UI.WebControls.Label lblInstrucoesLinha7;
         
         /// <summary>
-        /// lblInstrucoes9 control.
+        /// lblInstrucoesLinha8 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstrucoes9;
+        protected global::System.Web.UI.WebControls.Label lblInstrucoesLinha8;
         
         /// <summary>
-        /// lblInstrucoes10 control.
+        /// lblInstrucoesLinha9 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstrucoes10;
+        protected global::System.Web.UI.WebControls.Label lblInstrucoesLinha9;
         
         /// <summary>
-        /// lblInstrucoes11 control.
+        /// lblInstrucoesLinha10 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstrucoes11;
+        protected global::System.Web.UI.WebControls.Label lblInstrucoesLinha10;
         
         /// <summary>
         /// lblT_Abatimento1 control.
@@ -778,13 +778,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblT_Abatimento1;
         
         /// <summary>
-        /// lblAbatimento1 control.
+        /// lblDescontos1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAbatimento1;
+        protected global::System.Web.UI.WebControls.Label lblDescontos1;
         
         /// <summary>
         /// lblT_Deducoes1 control.
@@ -814,13 +814,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblT_Mora1;
         
         /// <summary>
-        /// lblMora1 control.
+        /// lblMulta1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMora1;
+        protected global::System.Web.UI.WebControls.Label lblMulta1;
         
         /// <summary>
         /// lblT_Acrescimo1 control.
@@ -850,13 +850,13 @@ namespace InscricaoCongresso.View {
         protected global::System.Web.UI.WebControls.Label lblT_ValorCob1;
         
         /// <summary>
-        /// lblValorCob1 control.
+        /// lblValorCobrado1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblValorCob1;
+        protected global::System.Web.UI.WebControls.Label lblValorCobrado1;
         
         /// <summary>
         /// lblT_Rodape control.
@@ -947,14 +947,5 @@ namespace InscricaoCongresso.View {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCorte;
-        
-        /// <summary>
-        /// btnPrint control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPrint;
     }
 }

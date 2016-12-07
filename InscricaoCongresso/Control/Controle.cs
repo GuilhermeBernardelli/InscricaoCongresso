@@ -40,6 +40,12 @@ namespace InscricaoCongresso.Control
             entity.salvarBoleto(boleto);
         }
 
+        public INSCRITOS pesquisaInscritosId(int id)
+        {
+            int pesquisa = id;
+            return entity.selectInscritosPorId(pesquisa);
+        }
+
         public int idTrabalhoPorTitulo(string titulo)
         {
             int id;
@@ -118,6 +124,36 @@ namespace InscricaoCongresso.Control
         {
             int id = valor;
             return entity.selectValor(id);
+        }
+
+        public ENDERECOS pesquisaEnderecoPorId(int idEndereco)
+        {
+            int id = idEndereco;
+            return entity.selectEndereco(id);
+        }
+
+        public LOGRADOUROS pesquisaLogradouroId(int idLogradouro)
+        {
+            int id = idLogradouro;
+            return entity.selectLogradouro(id);
+        }
+
+        public CIDADES pesquisaCidadeId(int idCidade)
+        {
+            int id = idCidade;
+            return entity.selectCidade(id);
+        }
+
+        public ESTADOS pesquisaEstadoId(int idEstado)
+        {
+            int id = idEstado;
+            return entity.selectEstado(id);
+        }
+
+        public PAISES pesquisaPaisId(int idPaises)
+        {
+            int id = idPaises;
+            return entity.selectPais(id);
         }
     }
 }
