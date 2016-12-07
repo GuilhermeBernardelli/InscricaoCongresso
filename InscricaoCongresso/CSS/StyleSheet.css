@@ -1,0 +1,22 @@
+﻿body{
+    font-family:Arial;
+    margin:0px;
+}
+.logo{
+    float:left;
+    width:400px;
+}
+.float{
+    float:left;
+}
+
+.preenchimento{    
+    text-align:center;
+    margin-left:9px;
+}
+.linha{
+    text-align:right;
+}
+.inscricao{
+    text-align:left;
+}
