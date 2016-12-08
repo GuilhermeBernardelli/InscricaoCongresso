@@ -45,20 +45,20 @@
         <asp:Panel ID="pnlForm" runat="server" Height="138px" Width="100%" HorizontalAlign="Left" BorderColor="#006600" GroupingText="Dados pessoais">
             <br />
 &nbsp;<asp:Label ID="lblNome" runat="server" Text="Nome : "></asp:Label>
-            <asp:TextBox ID="txtNome" runat="server" Width="483px" AutoPostBack="True" OnTextChanged="ValidaNome"></asp:TextBox>
+            <asp:TextBox ID="txtNome" runat="server" Width="483px" OnTextChanged="ValidaNome" MaxLength="150"></asp:TextBox>
 &nbsp;
             <asp:Label ID="lblCpf" runat="server" Text="CPF : "></asp:Label>
-            <asp:TextBox ID="txtCPF" runat="server" Width="168px" AutoPostBack="True" OnTextChanged="ValidaCPF"></asp:TextBox>
+            <asp:TextBox ID="txtCPF" runat="server" Width="168px" OnTextChanged="ValidaCPF" MaxLength="20"></asp:TextBox>
             <br />
             <br />
             &nbsp;<asp:Label ID="lblRgRne" runat="server" Text="RG/RNE : "></asp:Label>
-            <asp:TextBox ID="txtRG" runat="server" Width="140px"></asp:TextBox>
+            <asp:TextBox ID="txtRG" runat="server" Width="140px" OnTextChanged="txtRG_TextChanged"></asp:TextBox>
 &nbsp;
             <asp:Label ID="lblNascimento" runat="server" Text="Data de nascimento : "></asp:Label>
             <asp:TextBox ID="txtNascimento" runat="server" Width="140px" TextMode="DateTime"></asp:TextBox>
 &nbsp;
             <asp:Label ID="lblNacionalidade" runat="server" Text="Nacionalidade : "></asp:Label>
-            <asp:TextBox ID="txtNacional" runat="server" Width="150px" AutoPostBack="True" OnTextChanged="ValidaNacionalidade"></asp:TextBox>
+            <asp:TextBox ID="txtNacional" runat="server" Width="150px" OnTextChanged="ValidaNacionalidade"></asp:TextBox>
             <br />
             <br />
             
@@ -76,41 +76,41 @@
             &nbsp;<asp:Label ID="lblEndereco" runat="server" Text="Endereço : "></asp:Label>
             <asp:DropDownList ID="ddlLogradouro" runat="server" Height="19px" Width="70px" AutoPostBack="True">
             </asp:DropDownList>
-            &nbsp;<asp:TextBox ID="txtEndereco" runat="server" Width="460px"></asp:TextBox>
+            &nbsp;<asp:TextBox ID="txtEndereco" runat="server" Width="460px" MaxLength="99"></asp:TextBox>
             &nbsp;<asp:Label ID="lblNumeral" runat="server" Text="Número : "></asp:Label>
 &nbsp;<asp:TextBox ID="txtNumeral" runat="server" Width="42px"></asp:TextBox>
             <br />
             <br />
             &nbsp;<asp:Label ID="lblBairro" runat="server" Text="Bairro : "></asp:Label>
-            <asp:TextBox ID="txtBairro" runat="server" Width="200px"></asp:TextBox>
+            <asp:TextBox ID="txtBairro" runat="server" Width="200px" MaxLength="100"></asp:TextBox>
             &nbsp; &nbsp;<asp:Label ID="lblCidade" runat="server" Text="Cidade : "></asp:Label>
             <asp:DropDownList ID="ddlCidade" runat="server" Height="19px" Width="145px" AutoPostBack="True" Enabled="False">
             </asp:DropDownList>
-            <asp:TextBox ID="txtCidade" runat="server" Visible="False" Width="243px"></asp:TextBox>
+            <asp:TextBox ID="txtCidade" runat="server" Visible="False" Width="243px" MaxLength="49"></asp:TextBox>
             &nbsp;<asp:Label ID="lblUF" runat="server" Text="UF : "></asp:Label>
             <asp:DropDownList ID="ddlEstado" runat="server" Height="19px" Width="70px" AutoPostBack="True" OnSelectedIndexChanged="ddlEstado_SelectedIndexChanged">
             </asp:DropDownList>
             <br />
             <br />
             &nbsp;<asp:Label ID="lblCep" runat="server" Text="CEP : "></asp:Label>
-            <asp:TextBox ID="txtCEP" runat="server" Width="145px"></asp:TextBox>
+            <asp:TextBox ID="txtCEP" runat="server" Width="145px" OnTextChanged="txtCEP_TextChanged"></asp:TextBox>
             &nbsp;
             <asp:Label ID="lblComplemento" runat="server" Text="Complemento : "></asp:Label>
-            <asp:TextBox ID="txtComplemento" runat="server" Width="352px"></asp:TextBox>
+            <asp:TextBox ID="txtComplemento" runat="server" Width="352px" MaxLength="120"></asp:TextBox>
             <br />
             <br />
             &nbsp;<asp:Label ID="lblEmail" runat="server" Text="Email : "></asp:Label>
-            <asp:TextBox ID="txtEmail" runat="server" Width="607px"></asp:TextBox>
+            <asp:TextBox ID="txtEmail" runat="server" Width="607px" OnTextChanged="txtEmail_TextChanged"></asp:TextBox>
             <br />
             <br />
             &nbsp;<asp:Label ID="lblTelefone1" runat="server" Text="Telefone principal : "></asp:Label>
-            <asp:TextBox ID="txtTelefone1" runat="server" Width="210px"></asp:TextBox>
+            <asp:TextBox ID="txtTelefone1" runat="server" Width="210px" OnTextChanged="txtTelefone1_TextChanged"></asp:TextBox>
             &nbsp;<asp:Label ID="lblTelefone2" runat="server" Text="Telefone secundário : "></asp:Label>
             <asp:TextBox ID="txtTelefone2" runat="server" Width="210px"></asp:TextBox>
             &nbsp;<br />
             <br />
             &nbsp;<asp:Label ID="lblCelular" runat="server" Text="Celular : "></asp:Label>
-            <asp:TextBox ID="txtCelular" runat="server" Width="210px"></asp:TextBox>
+            <asp:TextBox ID="txtCelular" runat="server" Width="210px" OnTextChanged="txtCelular_TextChanged"></asp:TextBox>
             <br />
             <br />
             
@@ -121,13 +121,13 @@
                 &nbsp;
                 <br />
                 &nbsp;<asp:Label ID="lblArea" runat="server" Text="Área profissional : "></asp:Label>
-                <asp:TextBox ID="txtArea" runat="server" Width="213px"></asp:TextBox>
+                <asp:TextBox ID="txtArea" runat="server" Width="213px" MaxLength="30"></asp:TextBox>
 &nbsp;<asp:Label ID="lblLocalTrabalho" runat="server" Text="Local de trabalho/estudo : "></asp:Label>
-                <asp:TextBox ID="txtLocal" runat="server" Width="252px"></asp:TextBox>
+                <asp:TextBox ID="txtLocal" runat="server" Width="252px" MaxLength="30"></asp:TextBox>
                 <br />
                 <br />
                 &nbsp;<asp:Label ID="lblSituacaoFormacao" runat="server" Text=" Situação atual dos estudos : "></asp:Label>
-                <asp:TextBox ID="txtSituacao" runat="server" Width="587px"></asp:TextBox>
+                <asp:TextBox ID="txtSituacao" runat="server" Width="587px" MaxLength="100"></asp:TextBox>
                 <br />
                 &nbsp;<br />&nbsp;<asp:Label ID="lblTrabalho" runat="server" Text="Irá apresentar trabalho acadêmico ?"></asp:Label>
                 <br />
@@ -139,11 +139,11 @@
         <asp:Panel ID="pnlTrabalho" runat="server" Height="381px" CssClass="left" Visible="False" GroupingText="Trabalho acadêmico" HorizontalAlign="Left" style="margin-top: 0px">
             <br />
             &nbsp;<asp:Label ID="lblNomeTrabalho" runat="server" Text="Titulo do trabalho : " ></asp:Label>
-            <asp:TextBox ID="txtTituloTrabalho" runat="server" Width="630px" CausesValidation="True" ValidateRequestMode="Enabled"></asp:TextBox>
+            <asp:TextBox ID="txtTituloTrabalho" runat="server" Width="630px" CausesValidation="True" ValidateRequestMode="Enabled" MaxLength="120"></asp:TextBox>
             <br />
             <br />
             &nbsp;<asp:Label ID="lblResumo" runat="server" Text="Resumo : "></asp:Label>
-            <asp:TextBox ID="txtTrabalhoResumo" runat="server" Height="52px" TextMode="MultiLine" Width="707px"></asp:TextBox>
+            <asp:TextBox ID="txtTrabalhoResumo" runat="server" Height="52px" TextMode="MultiLine" Width="707px" MaxLength="300"></asp:TextBox>
             <br />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;<asp:Label ID="lblListaAutores" runat="server" Text="Autores associados : "></asp:Label>
             <asp:TextBox ID="txtTrabalhoAutores" runat="server" Height="43px" TextMode="MultiLine" Width="636px" ReadOnly="True"></asp:TextBox>
@@ -157,11 +157,11 @@
             </asp:Panel>
                 <asp:Panel ID="pnlAutor" runat="server" HorizontalAlign="Center">
                     <asp:Label ID="lblAutorSobrenome" runat="server" Text="Sobrenome : "></asp:Label>
-                    <asp:TextBox ID="txtSobrenomeAutor" runat="server" Width="156px"></asp:TextBox>
+                    <asp:TextBox ID="txtSobrenomeAutor" runat="server" Width="156px" MaxLength="120"></asp:TextBox>
                     &nbsp;<asp:Label ID="lblAutorNome" runat="server" Text="Nome : " ></asp:Label>
-                    <asp:TextBox ID="txtNomeAutor" runat="server" Width="156px"></asp:TextBox>
+                    <asp:TextBox ID="txtNomeAutor" runat="server" Width="156px" MaxLength="120"></asp:TextBox>
                     <asp:Label ID="lblAutorNomeMeio" runat="server" Text="Nome do meio : " Width="121px"></asp:Label>
-                    <asp:TextBox ID="txtNomeMeioAutor" runat="server" Width="156px"></asp:TextBox>
+                    <asp:TextBox ID="txtNomeMeioAutor" runat="server" Width="156px" MaxLength="120"></asp:TextBox>
                 </asp:Panel>
             <br />
             <br />

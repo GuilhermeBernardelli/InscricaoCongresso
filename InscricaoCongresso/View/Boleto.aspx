@@ -213,7 +213,7 @@
                
                 
                 <asp:Label ID="lblT_AgeCodBen0" runat="server" Text="Agência/Código do Beneficiário" Font-Size="Small" Font-Names="Arial" Height="20px" Width="211px"></asp:Label>
-                <asp:Label ID="lblT_Especie" runat="server" Text="Espécie" Font-Size="Small" Font-Names="Arial" Height="20px" Width="57px"></asp:Label>
+                <asp:Label ID="lblT_Especie" runat="server" Text="Espécie" Font-Size="Small" Font-Names="Arial" Height="20px" Width="54px"></asp:Label>
                 &nbsp;<asp:Label ID="lblT_Qnt" runat="server" Text="Quantidade" Font-Size="Small" Font-Names="Arial" Height="20px" Width="78px"></asp:Label>
                 <asp:Label ID="lblT_NossoNum" runat="server" Text="Nosso número" Font-Size="Small" Font-Names="Arial" Height="20px" CssClass="auto-style6"></asp:Label>
                 <br />
@@ -221,7 +221,7 @@
                 <asp:Label ID="lblBeneficiario" runat="server" Font-Size="Large" Font-Names="Arial" Width="467px" Height="21px"></asp:Label>
                 
                 <asp:Label ID="lblAgeCodBen" runat="server" Font-Size="Large" Font-Names="Arial" Width="200px" Height="21px" CssClass="preenchimento"></asp:Label>
-                <asp:Label ID="lblEspecie" runat="server" Font-Size="Large" Font-Names="Arial" Width="58px" Height="21px" CssClass="auto-style11"></asp:Label>
+                <asp:Label ID="lblEspecie" runat="server" Font-Size="Large" Font-Names="Arial" Width="55px" Height="21px" CssClass="auto-style11"></asp:Label>
                 <asp:Label ID="lblQnt" runat="server" Font-Size="Large" Font-Names="Arial" Width="70px" Height="21px" CssClass="auto-style12"></asp:Label>
                 <asp:Label ID="lblNossoNum" runat="server" Font-Size="Large" Font-Names="Arial" Width="176px" Height="21px" CssClass="auto-style13"></asp:Label>
                 </div>
@@ -464,7 +464,7 @@
                 <br />
                 <asp:Label ID="lblT_Mora1" runat="server" CssClass="auto-style43" Font-Names="Arial" Font-Size="Small" Height="22px" Text="(+) Mora/Multa" Width="182px"></asp:Label>
                 <br />
-                <asp:Label ID="lblMulta1" runat="server" CssClass="auto-style21" Font-Names="Arial" Font-Size="Large" Height="25px" Width="288px"></asp:Label>
+                <asp:Label ID="lblMulta1" runat="server" CssClass="auto-style21" Font-Names="Arial" Font-Size="Large" Height="27px" Width="288px"></asp:Label>
                 <br />
                 <asp:Label ID="lblT_Acrescimo1" runat="server" CssClass="auto-style43" Font-Names="Arial" Font-Size="Small" Height="22px" Text="(+) Outros acréscimos" Width="182px"></asp:Label>
                 <br />

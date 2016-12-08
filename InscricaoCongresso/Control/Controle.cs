@@ -108,10 +108,9 @@ namespace InscricaoCongresso.Control
             return entity.selectCedente(empresa);
         }
 
-        public int pesquisaBoletoAtualNum(int idInscrito)
+        public int pesquisaBoletoAtualNum()
         {
-            int id = idInscrito;
-            return entity.selectBoletoAtualNum(id);
+            return entity.selectBoletoAtualNum();
         }
 
         public CONTAS pesquisaContaPorId(int idConta)

@@ -52,11 +52,18 @@ namespace InscricaoCongresso.Model
                     select inscritos).SingleOrDefault();
         }
 
-        public int selectBoletoAtualNum(int id)
+        public int selectBoletoAtualNum()
         {
-            return (from boletos in entityModel.BOLETOS
-                    where (boletos.idInscritos == id)
-                    select boletos.nossoNumero).SingleOrDefault();
+            try
+            {
+                return (from boletos in entityModel.BOLETOS
+                        orderby boletos.id descending
+                        select boletos.nossoNumero).First();
+            }
+            catch
+            {
+                return 0;
+            }
         }     
 
         public ENDERECOS pesquisaEnderecoPorNomeNum(string nome, string num)

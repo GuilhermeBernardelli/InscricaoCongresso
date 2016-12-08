@@ -3,6 +3,7 @@ using InscricaoCongresso.Model;
 using NReco.ImageGenerator;
 using System;
 using System.Drawing.Printing;
+using System.Web;
 using System.Web.UI.WebControls;
 
 namespace InscricaoCongresso.View
@@ -27,9 +28,15 @@ namespace InscricaoCongresso.View
         public static string codBarras = "";
         public static string linhaDigitavel = "";
         public static int idPagador = 0;
+        public static string navegador = "";
 
         protected void Page_Load(object sender, EventArgs e)
-        {   
+        {
+            if (!IsPostBack)
+            {
+                HttpBrowserCapabilities browser = Request.Browser;
+                navegador = browser.Browser;
+            } 
             idPagador = Convert.ToInt32(Session["pagador"]);
             codBarras = Session["codBarras"].ToString();
             linhaDigitavel = (Session["boleto"]).ToString();
@@ -115,6 +122,8 @@ namespace InscricaoCongresso.View
             lblInstrucoesLinha10.Text = boleto.informacoesL10;
 
             //chamada para a renderização do código de barras
+            //numeração de código de barras valido para testes do leitor bancário
+            codBarras = "23791699400000000002372060037106397400814500";
             functionCodeBar(codBarras);
             btnPrint_Click(sender, e);
         }
@@ -134,14 +143,29 @@ namespace InscricaoCongresso.View
         }
         public void functionPretoGrosso()
         {
-            System.Web.UI.WebControls.Image barragrossa = new System.Web.UI.WebControls.Image();
-            barragrossa.ImageUrl = "~/Image/p.png";
-            Label pretoGrosso = new Label()
+            Image barragrossa = new Image();
+            barragrossa.ImageUrl = "~/Image/p.png";            
+            Label pretoGrosso = new Label();
+            //alteração na imagem renderizada para atender ao padrão do IE
+            if (navegador.Equals("IE"))
             {
-                //BackColor = preto,
-                Width = 4,
-                Height = 90                     
-            };
+                barragrossa.Width = 5;
+                barragrossa.Height = 90;
+                pretoGrosso = new Label()
+                {                    
+                    Width = 5,
+                    Height = 90
+                };
+            }
+            //imagem sem alteração para os demais navegadores
+            else
+            {
+                pretoGrosso = new Label()
+                {
+                    Width = 4,
+                    Height = 90
+                };
+            }
             pretoGrosso.Controls.Add(barragrossa);
             pnlCodeBar.Controls.Add(pretoGrosso);
         }
@@ -152,7 +176,6 @@ namespace InscricaoCongresso.View
             barrafina.ImageUrl = "~/Image/p_f.png";
             Label pretoFino = new Label()
             {
-                //BackColor = System.Drawing.Color.Black,
                 Width = 2,
                 Height = 90
             };
@@ -163,11 +186,23 @@ namespace InscricaoCongresso.View
         {
             System.Web.UI.WebControls.Image brancogrosso = new System.Web.UI.WebControls.Image();
             brancogrosso.ImageUrl = "~/Image/b.png";
-            Label brancoGrosso = new Label()
+            Label brancoGrosso = new Label();
+            if (navegador.Equals("IE"))
             {
-                Width = 4,
-                Height = 90
-            };
+                brancoGrosso = new Label()
+                {
+                    Width = 5,
+                    Height = 90
+                };
+            }
+            else
+            {
+                brancoGrosso = new Label()
+                {
+                    Width = 4,
+                    Height = 90
+                };
+            }
             brancoGrosso.Controls.Add(brancogrosso);
             pnlCodeBar.Controls.Add(brancoGrosso);
         }

@@ -9,116 +9,241 @@ using System.Web.UI.WebControls;
 using System.Data.Sql;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Net.Mail;
+using System.Net;
 
 namespace InscricaoCongresso.View
 {
     public partial class Principal : System.Web.UI.Page
     {
+        /*
+         * BLOCO DE VARIAVEIS DE MANUTENÇÃO
+         * fazem parte das regras de negócio e devem ser atualizadas conforme a necessidade
+         */
+
+        //variaveis que devem ser alteradas para conter a faixa de valores válidos para o nosso número
+        //variável inicio somente é utilizada na ausencia de outros boletos na base de dados, logo, será alterada unicamente antes desta execução
+        public static int inicioNossoNum = 1;
+        //variável fim da faixa está intimamente ligada ao alerta da faixa e deverá sofrer atualização caso haja adição de nova faixa de valores
+        public static int fimNossoNum = 1000;
+        //inteiro para definir faltando quantos números para estourar a faixa será disparado um email 
+        //solicitando nova faixa de valores para o nosso número
+        public int alertaFaixa = 10;
+
+        /*
+         * BLOCO DE VARIAVEIS DE COMUNICAÇÃO
+         * dados referentes a saída de email's do sistema e dados do destino destes email's
+         */
+
+        //aqui deverá ser incluso um cliente smtp + porta de email, um email válido e a senha deste email
+        public static string clienteSmtp = "smtp.notes.na.collabserv.com";
+        public static int port = 25;
+        public static string emailEmissor = "XXXXXXX@iamspe.sp.gov.br";
+        public static string password = "Senha do emissor";
+        //incluir aqui o email do responsável por manter o sistema e resolver problemas
+        public static string emailReceptor = "guilhermeprezia@iamspe.sp.gov.br";
+        
+        /*
+         * BLOCO DE VARIAVEIS DO SISTEMA
+         * fazem parte do funcionamento do core e não devem sofrer alteração 
+         */
+
+        //variaveis boleanas para identificar inclusão de cadastro ou endereço pré-existente
         public static bool novo = true;
         public static bool novoEndereco = true;
-        public static string idioma = "BR", dac = "";
-        public static string linhaDigitavel;
+        //variaveis tipo texto que armazenam respectivamente o idioma, o digito geral de 
+        //verificação do código de barras e da linha digitavel do boleto e a própria linha digitavel
+        public static string idioma = "BR", dac = "", linhaDigitavel;
+        //data utilizada como padrão nos boletos para gerar o fator de vencimento
         public static DateTime dataBase = new DateTime(1997, 10, 07);
         // a configuração da data de vencimento deve ser incluida aqui no formato AAAA, MM, dddd
         public static DateTime vencimento = new DateTime(2017, 07, 01);
+        //variaveis numéricas inteiras para armazenar respectivamente o nosso número e o número do documento do boleto
         public static int nossoNum, numDocumento;
+        //chamada da classe de controle e dos tipos gerados para armazenamento na base de dados
         Controle controle = new Controle();
         TRABALHOS trabalho = new TRABALHOS();
         AUTORES autor = new AUTORES();
         INSCRITOS inscricao = new INSCRITOS();
         ENDERECOS endereco = new ENDERECOS();
         static BOLETOS boleto = new BOLETOS();
-
+        //Arrays de obejtos da base de dados
+        List<AUTORES> autoresTrabalho = new List<AUTORES>();
         static List<ESTADOS> estados = new List<ESTADOS>();
         static List<PAISES> paises = new List<PAISES>();
         static List<CIDADES> cidades = new List<CIDADES>();
         static List<LOGRADOUROS> logradouros = new List<LOGRADOUROS>();
-        List<AUTORES> autoresTrabalho = new List<AUTORES>();
-
+        
         protected void Page_Load(object sender, EventArgs e)
         {
+            //declaração de contador para atribuição dinamica do indice dos objetos adicionados as 
+            //drop down lists alimentadas pela base já no load da aplicação
             int count;
-
+            //rotina executada no primeiro load da página
             if (!IsPostBack)
-            {
+            {                                
+                //na ausencia de valores na tabela boleto o sistema entende que deve assumir o primeiro valor da faixa
+                if (controle.pesquisaBoletoAtualNum() == 0)
+                {
+                    numDocumento = nossoNum = inicioNossoNum;
+                }
+                //verifica se os valores ainda estão dentro do limitado pela faixa
+                else if (controle.pesquisaBoletoAtualNum() >= fimNossoNum)
+                {
+                    string alertMessage1 = "";
+                    if (idioma.Equals("BR"))
+                    {
+                        alertMessage1 = "Houve algum problema na geração do boleto, Um e-mail foi enviado para resolver o problema, tente novamente mais tarde";
+                    }
+                    else if (idioma.Equals("ES"))
+                    {
+                        alertMessage1 = "Hubo un problema en la generación del boleto, Un correo electrónico fue enviado a resolver el problema, por favor intente de nuevo más tarde";
+                    }
+                    else if (idioma.Equals("EN"))
+                    {
+                        alertMessage1 = "There was a problem with payment ticket generation, an email was sent to solve the issue, please try again later";
+                    }
+                    ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage1 + "')", true);
+
+
+                    //cria uma mensagem
+                    MailMessage mail = new MailMessage();
+
+                    //define os endereços
+                    mail.From = new MailAddress(emailEmissor);
+                    mail.To.Add(emailReceptor);
+
+                    //define o conteúdo
+                    mail.Subject = "Ultrapassada faixa nosso número";
+                    mail.Body = "Houve o estouro da faixa de valores disponíveis para o nosso números.\n Favor solicitar junto ao banco por remessa nova faixa\n"
+                         + "Ao faze-lo atualize a variável fimNossoNum deste sistema.\n\n\nObrigado, atenciosamente.\n\n  Sistema de cadastro, inscrição e pagamento";
+
+                    SmtpClient smtp = new SmtpClient(clienteSmtp, port);
+                    smtp.EnableSsl = true;
+                    NetworkCredential cred = new NetworkCredential(emailEmissor, password);
+                    smtp.Credentials = cred;
+
+                    // inclui as credenciais
+                    smtp.UseDefaultCredentials = true;
+                    //envia a mensagem
+                    smtp.Send(mail);
+                }
+                //caso o nosso número esteja dentro da faixa inicia a rotina a seguir
+                else
+                {
+                    //Atribui o valor seguinte ao atual ao numero do documento e ao nosso número 
+                    numDocumento = nossoNum = controle.pesquisaBoletoAtualNum() + 1;
+                }
+                //valida se o limite de nosso número atingiu o valor definido para alerta
+                if(nossoNum + alertaFaixa >= fimNossoNum)
+                {
+                    //caso o valor atinja o ponto critico a cada novo boleto será disparado novo email
+                    //cria uma mensagem
+                    MailMessage mail = new MailMessage();
+
+                    //define os endereços
+                    mail.From = new MailAddress(emailEmissor);
+                    mail.To.Add(emailReceptor);
+
+                    //define o conteúdo
+                    mail.Subject = "Ultrapassada quantidade estipulada para alerta";
+                    mail.Body = "Atualmente o sistema esta à "+ (fimNossoNum - nossoNum) + " valores de estourar.\n" 
+                        + "Verifique a possibilidade de enviar remessa solicitando nova faixa de boletos.\n" 
+                        + "Ao faze-lo atualize a variável fimNossoNum deste sistema.\n\n\nObrigado, atenciosamente.\n\n  Sistema de cadastro, inscrição e pagamento";
+
+                    SmtpClient smtp = new SmtpClient(clienteSmtp, port);
+                    smtp.EnableSsl = true;
+                    NetworkCredential cred = new NetworkCredential(emailEmissor, password);
+                    smtp.Credentials = cred;
+
+                    // inclui as credenciais
+                    smtp.UseDefaultCredentials = true;
+                    //envia a mensagem
+                    smtp.Send(mail);
+                }
+
+                //pesquisa pelos tipos  de logradouros cadastrados na tabela LOGRADOUROS da base de dados
                 logradouros = controle.pesquisaLogradouros();
-                count = 1;
+                
+                //reinicia o contador de indice
+                //count = 1;
+
+                //adiciona o primeiro item estático ao indice na posição 0
                 ddlLogradouro.TabIndex.Equals(0);
                 ddlLogradouro.Items.Add("-------");
+                //interação condicionada a quantidade de elementos retornados na pesquisa anterior
                 foreach (LOGRADOUROS value in logradouros)
                 {
-                    ddlLogradouro.TabIndex.Equals(count);
-                    ddlLogradouro.Items.Add(value.siglaLogradouro + " - " + value.descLogradouro);
-                }
+                    //atribui o indice do elemento e o valor do objeto composta pela sigla, - e descrição do tipo de logradouro
 
+                    //ddlLogradouro.TabIndex.Equals(count);
+
+                    ddlLogradouro.Items.Add(value.siglaLogradouro + " - " + value.descLogradouro);
+                    
+                    //incrementa o indice
+                    //count++;
+                }
+                //pesquisa na base pelos estados cadastrados
                 estados = controle.pesquisaEstados();
-                count = 1;
+                
+                //reinicia o contador de indice
+                //count = 1;
+                
+                //adiciona o primeiro item estático ao indice na posição 0
                 ddlEstado.TabIndex.Equals(0);
                 ddlEstado.Items.Add("-------");
+                //interação condicionada a quantidade de elementos retornados na pesquisa anterior
                 foreach (ESTADOS value in estados)
                 {
-                    ddlEstado.TabIndex.Equals(count);
-                    ddlEstado.Items.Add(value.siglaEstado + " - " + value.nomeEstado);
-                    count++;
+                    //retira o valor padrão para estrangeiros da lista
+                    if (value.id != 1)
+                    {
+                        //atribui o indice do elemento e o valor do objeto composta pela sigla, - e nome do estado
+                        //ddlEstado.TabIndex.Equals(count);
+
+                        ddlEstado.Items.Add(value.siglaEstado + " - " + value.nomeEstado);
+                        
+                        //incrementa o indice
+                        //count++;
+                    }
                 }
+                //pesquisa pelos estados cadastrados
                 paises = controle.pesquisaPaises();
-                count = 1;
+                
+                //reinicia o contador
+                //count = 1;
+                
+                //adiciona o primeiro item estático ao indice na posição 0
                 ddlPaises.TabIndex.Equals(0);
                 ddlPaises.Items.Add("-------");
+                //interação condicionada a quantidade de elementos retornados na pesquisa anterior
                 foreach (PAISES value in paises)
                 {
                     if (!value.siglaPais.Equals("BRA"))
                     {
-                        ddlPaises.TabIndex.Equals(count);
+                        //atribui o indice do elemento e o valor do objeto composta pela sigla, - e nome do país
+                        //ddlPaises.TabIndex.Equals(count);
+
                         ddlPaises.Items.Add(value.siglaPais + " - " + value.nomePais);
-                        count++;
+                        
+                        //incrementa o indice
+                        //count++;
                     }
                 }
-                /*
-                boleto = new BOLETOS();
-                controle.adicionarBoleto(boleto);
-                boleto.localPagamento = "";
-                boleto.especieDocumento = "";
-                boleto.dataEmissao = new DateTime();
-                boleto.dataVencimento = new DateTime();
-                boleto.numeroDocumento = 0;                
-                boleto.nossoNumero = 0;
-                boleto.informacoesDiversas = "";
-                boleto.idCedente = 1;       
-                boleto.codigoBarras = "";
-                boleto.linhaDigitavel = "";
-                boleto.idInscritos = 83;
-                controle.atualizar();*/
-            }
-            if (ddlEstado.SelectedIndex != 0)
-            {
-                ddlCidade.Enabled = true;
-                cidades = controle.pesquisaCidades(ddlEstado.SelectedIndex);
-                count = 1;
-                ddlCidade.TabIndex.Equals(0);
-                ddlCidade.Items.Add("-------");
-                foreach (CIDADES value in cidades)
-                {
-                    ddlCidade.TabIndex.Equals(count);
-                    ddlCidade.Items.Add(value.nomeCidade);
-                    count++;
-                }
-            }
-            else
-            {
-                ddlCidade.Items.Clear();
-                ddlCidade.Enabled = false;
-            }
+            }           
 
         }
 
+        //altera a visualização de acordo com o estado do checkbox que indica a apresentação de trabalho academico no evento
         protected void chkTrabalho_CheckedChanged(object sender, EventArgs e)
         {
+            //caso o checkbox seja marcado
             if (chkTrabalho.Checked)
             {
                 pnlTrabalho.Visible = true;
                 pnlAdicionar.Visible = true;
             }
+            //caso o checkbox seja desmarcado
             else
             {
                 pnlTrabalho.Visible = false;
@@ -126,72 +251,87 @@ namespace InscricaoCongresso.View
             }
         }
 
+        //função responsável por armazenar e gerar os dados do boleto para renderização
         private void gerarBoleto()
         {
             try
             {
+                //cria uma nova instancia do objeto boleto
                 boleto = new BOLETOS();
+                //salva na base esta instancia
                 controle.adicionarBoleto(boleto);
 
+                //atribui as chaves estrangeiras correspondentes ao sacado, cedente e valor, respectivamente
                 boleto.idInscritos = controle.pesquisaInscritos(txtCPF.Text).id;
                 boleto.idCedente = 1;
                 boleto.idValor = 1;
 
-                //rotinas para tratamento dos campos de data
+                //rotinas para tratamento dos campos de data de emissão e vencimento
                 string formatedEmissao = DateTime.Today.ToString("dd/MM/yyyy");
                 boleto.dataEmissao = formatedEmissao;
                 string formatedVencimento = vencimento.ToString("dd/MM/yyyy");
                 boleto.dataVencimento = formatedVencimento;
 
+                //preenchimento de campos estáticos padrão
                 boleto.localPagamento = "QUALQUER BANCO ATÉ O VENCIMENTO";
                 boleto.especieDocumento = "R$";
 
-                //Campo de informações a critério do cedente cada linha está limitada a 100 caracteres
-                boleto.informacoesL1 = "Teste do campo de informações";
-                boleto.informacoesL2 = "validação";
-                boleto.informacoesL3 = "linha 3";
+                //Campo de informações a critério do cedente cada linha está limitada a 100 caracteres, 
+                //sendo que cada linha corresponde a uma unica linha também no boleto
+                boleto.informacoesL1 = "";
+                boleto.informacoesL2 = "";
+                boleto.informacoesL3 = "";
                 boleto.informacoesL4 = "";
-                boleto.informacoesL5 = "linha 5";
+                boleto.informacoesL5 = "";
                 boleto.informacoesL6 = "";
                 boleto.informacoesL7 = "";
-                boleto.informacoesL8 = "linha 8";
+                boleto.informacoesL8 = "";
                 boleto.informacoesL9 = "";
-                boleto.informacoesL10 = "linha final";
+                boleto.informacoesL10 = "";
 
-                //INSERIR AQUI ROTINA DE TRATAMENTO PARA GERAR O NOSSO NÚMERO E NÚMERO DE DOCUMENTO
-                boleto.nossoNumero = 2;
-                boleto.numeroDocumento = 2;
+                //atribuido o valor das variáveis tratadas no inicio da aplicação
+                boleto.nossoNumero = nossoNum;
+                boleto.numeroDocumento = numDocumento;
 
+                //chamada dos métudos que geram o códgo de barras e a linha digitável de acordo com os dados da base
                 boleto.codigoBarras = geraCodigoBarras();
                 boleto.linhaDigitavel = geraLinhaDigitavel();
 
+                //associação entre os valores do boleto e variaveis de sessão para serem passadas como parametro para a próxima página
                 Session["pagador"] = boleto.idInscritos;
                 Session["boleto"] = boleto.linhaDigitavel;
                 Session["codBarras"] = boleto.codigoBarras;
 
+                //salva as alterações no boleto na base de dados
                 controle.atualizar();
 
+                //chama a página de renderização do boleto
                 Response.Redirect("Boleto.aspx");
             }
+            //na impossibilidade de gerar o boleto por qualquer exceção haverá a chamada das instruções a seguir
             catch
             {
+                //define a mensagem como vazia
                 string alertMessage1 = "";
+                //indentifica o idioma da mensagem e altera de acordo com este
                 if (idioma.Equals("BR"))
                 {
-                    alertMessage1 = "Houve algum problema na geração do boleto, envie um email para xxxxxx@iamspe.sp.gov.br";
+                    alertMessage1 = "Houve algum problema na geração do boleto, envie um email para "+ emailReceptor;
                 }
                 else if (idioma.Equals("ES"))
                 {
-                    alertMessage1 = "Hubo un problema en la generación del boleto, envía un correo electrónico a xxxxxx@iamspe.sp.gov.br";
+                    alertMessage1 = "Hubo un problema en la generación del boleto, envía un correo electrónico a "+ emailReceptor;
                 }
                 else if (idioma.Equals("EN"))
                 {
-                    alertMessage1 = "There was a problem with payment ticket generation, send an email to xxxxxx@iamspe.sp.gov.br";
+                    alertMessage1 = "There was a problem with payment ticket generation, send an email to " + emailReceptor;
                 }
+                //envia em um box de alerta para o usuário a mensagem no idioma correspondente
                 ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage1 + "')", true);
             }
         }
 
+        //função que gera a string que representa o código de barras a ser renderizado
         private string geraCodigoBarras()
         {
             //inclusão do código do banco na primeira sessão do codigo de barras
@@ -206,60 +346,69 @@ namespace InscricaoCongresso.View
             {
                 codBarraP1 = codBarraP1 + codigobanco[i].ToString();
             }
-            //adiciona a linha digitavel, na posição 4, o código da moeda corrente, 9 = real
+            //adiciona ao código de barras, na posição 4, o código da moeda corrente, 9 = real
+            //conclui a parte 1 do código de barras, esta na composição final ficará anterior ao digito de verificação geral o DAC
             codBarraP1 = codBarraP1 + "9";
-
+            //devolve o calculo em dias da diferença entre vencimento e database, este resultado é o fator de vencimento
             TimeSpan dias = vencimento - dataBase;
-            //formata o valor a ser pago
+            //formata o valor a ser pago alterando ele para uma string com 10 digitos
             VALORES valorBoleto = controle.pesquisaValorPorId(1);
+            // a função formata valor recebe como parametros um inteiro que representa o tamanho do retorno e uma string de entrada a sofrer alteração
+            //tem como parametro de saída uma nova string
             string valor10Digitos = formataValor(10, (valorBoleto.valor).ToString());
-
             //formata o numero do codigo cedente            
             string nossoNum13Digitos = formataValor(13, nossoNum.ToString());
-
+            //concatena diversas saídas para criar a parte 2 do código de barras, esta é, na composição final, posterior ao digito verificador geral o DAC
             codBarraP2 = (dias.Days).ToString() + valor10Digitos + "9" + cedente.codigoCedente + nossoNum13Digitos + "0" + contaCedente.carteira.ToString();
+            //concatena em uma variavel auxiliar a parte 1 e 2 do código de barras
             codAux = codBarraP1 + codBarraP2;
+            //envia à função de calculo do DAC esta string auxiliar, o retorno desta é unicamente um caracter, string, que representa um número de 0 à 9, o DAC
             dac = calculoModulo11(codAux);
+            //cria a string referente ao código de barras, composta pela parte 1, digito verificador e parte 2
             string codBarra = codBarraP1 + dac + codBarraP2;
+            //retorna esta string
             return codBarra;
         }
-
+        //função para formatação de strings, recebe como parametros uma string numérica e adiciona 0 a frente dela até um tamanho definido pelo usuário
         private string formataValor(int tamanho, string valorEntrada)
         {
+            //instancia a string de saída com vazio
             string valorFormatado = "";
+            //cria um array de caracteres com tamanho igual ao parametro passado pela função
             char[] valor = new char[tamanho];
+            //cria um contador inteiro igual a tamanho - 1
             int count = tamanho - 1;
+            //atribui um contador de virgulas iniciado em 0, pela lógica empregada no sistema as virgulas deverão ser desprezadas
             int virgulas = 0;
+            //cria e instancia um array de caracteres com o parametro passado pela função
             char[] aux = valorEntrada.ToCharArray();
-            if (aux.Count() < tamanho + 1)
+
+            //percorre o vetor aux do último ao primeiro elemento
+            for (int i = aux.Count() - 1; i >= 0; i--)
             {
-                for (int i = aux.Count() - 1; i >= 0; i--)
+                //verifica se o valor do vetor não é uma virgula
+                if (!aux[i].Equals(','))
                 {
-                    if (!aux[i].Equals(','))
-                    {
-                        valor[count--] = aux[i];
-                    }
-                    else
-                    {
-                        virgulas++;
-                    }
-                }
-                for (int i = 0; i < ((tamanho + virgulas) - aux.Count()); i++)
-                {
-                    valor[count--] = '0';
-                }
-            }
-            else
-            {
-                for (int i = aux.Count() - 1; i >= 0; i--)
-                {
+                    //não sendo uma virgula, atribui ao vetor valor e decrementa o contador do tamanho
                     valor[count--] = aux[i];
                 }
+                //se o valor for uma virgula incrementa o contador de virgulas
+                else
+                {
+                    virgulas++;
+                }
             }
+            //percorre o vetor valor da posição do contador de tamanho somado as virguals subtraidas do tamanho total preenchendo-o com 0s
+            for (int i = 0; i < ((tamanho + virgulas) - aux.Count()); i++)
+            {
+                valor[count--] = '0';
+            }
+            //converte o vetor em string novamente e atribui o valor ao retorno                       
             for (int i = 0; i < tamanho; i++)
             {
                 valorFormatado = valorFormatado + valor[i].ToString();
             }
+            //retorna o valor formatado
             return valorFormatado;
         }
 
@@ -278,10 +427,8 @@ namespace InscricaoCongresso.View
             {
                 linhaDigitavelP1 = linhaDigitavelP1 + codigobanco[i].ToString();
             }
-
             //adiciona a linha digitavel, na posição 4, o código da moeda corrente, 9 = real e o campo fixo = 9
             linhaDigitavelP1 = linhaDigitavelP1 + "99";
-
 
             //copia em um vetor de caracteres os caracteres referentes a conta do beneficiário
             char[] codCedente = (cedente.codigoCedente).ToCharArray();
@@ -538,6 +685,21 @@ namespace InscricaoCongresso.View
         }
         protected void btnAdicionar_Click(object sender, EventArgs e)
         {
+            //Aviso geral realizado na inclusão de autores
+            string alertMessage = "";
+            if (idioma.Equals("BR"))
+            {
+                alertMessage = "AVISO: Todos os autores que desejem estar presentes no evento deverão realizar e efetuar o pagamento de suas incrições individuais";
+            }
+            else if (idioma.Equals("ES"))
+            {
+                alertMessage = "ADVERTENCIA: Todos los autores que deseen asistir al evento deben realizar y efectuar el pago de sus registros individuales";
+            }
+            else if (idioma.Equals("EN"))
+            {
+                alertMessage = "WARNING: All authors wishing to be present at the event must make and pay their individual registration";
+            }
+            ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage + "')", true);
 
 
             if (txtTituloTrabalho.Text.Equals("") || txtTrabalhoResumo.Text.Equals(""))
@@ -559,13 +721,13 @@ namespace InscricaoCongresso.View
             }
             else if (novo)
             {
-                if (controle.idTrabalhoPorTitulo(txtTituloTrabalho.Text) == 0)
+                if (controle.idTrabalhoPorTitulo(txtTituloTrabalho.Text.ToUpper()) == 0)
                 {
                     controle.adicionarTrabalho(trabalho);
-                    trabalho.titulo = txtTituloTrabalho.Text;
-                    trabalho.resumo = txtTrabalhoResumo.Text;
+                    trabalho.titulo = txtTituloTrabalho.Text.ToUpper();
+                    trabalho.resumo = txtTrabalhoResumo.Text.ToUpper();
                     novo = false;
-                    txtTrabalhoAutores.Text = txtSobrenomeAutor.Text + ", " + txtNomeAutor.Text + " " + txtNomeMeioAutor.Text;
+                    txtTrabalhoAutores.Text = txtSobrenomeAutor.Text.ToUpper() + ", " + txtNomeAutor.Text.ToUpper() + " " + txtNomeMeioAutor.Text.ToUpper();
                 }
                 else
                 {
@@ -593,11 +755,11 @@ namespace InscricaoCongresso.View
                 txtTrabalhoResumo.Enabled = false;
 
                 controle.adicionarAutor(autor);
-                autor.idTrabalho = controle.idTrabalhoPorTitulo(txtTituloTrabalho.Text);
+                autor.idTrabalho = controle.idTrabalhoPorTitulo(txtTituloTrabalho.Text.ToUpper());
                 int ID = Convert.ToInt32(autor.idTrabalho);
-                autor.nomeAutor = txtNomeAutor.Text;
-                autor.nomesMeioAutor = txtNomeMeioAutor.Text;
-                autor.sobrenomeAutor = txtSobrenomeAutor.Text;
+                autor.nomeAutor = txtNomeAutor.Text.ToUpper();
+                autor.nomesMeioAutor = txtNomeMeioAutor.Text.ToUpper();
+                autor.sobrenomeAutor = txtSobrenomeAutor.Text.ToUpper();
                 controle.atualizar();
 
                 pnlAutor.Controls.Remove(lblAutorSobrenome);
@@ -693,6 +855,9 @@ namespace InscricaoCongresso.View
 
         protected void btnGerar_Click(object sender, EventArgs e)
         {
+            /*HttpBrowserCapabilities browser = Request.Browser;
+            string s = browser.Browser;*/
+
             //verifica a existencia de cadastro do usuário
             if (controle.pesquisaInscritos(txtCPF.Text) != null)
             {
@@ -731,8 +896,8 @@ namespace InscricaoCongresso.View
                         novo = false;
                     }
                     //atualiza os valores do trabalho na base
-                    trabalho.titulo = txtTituloTrabalho.Text;
-                    trabalho.resumo = txtTrabalhoResumo.Text;
+                    trabalho.titulo = txtTituloTrabalho.Text.ToUpper();
+                    trabalho.resumo = txtTrabalhoResumo.Text.ToUpper();
                     //salva esse trabalho na base de dados
                     controle.atualizar();
                 }
@@ -789,9 +954,9 @@ namespace InscricaoCongresso.View
                     {
                         controle.adicionarAutor(autor);
                         autor.idTrabalho = controle.idTrabalhoPorTitulo(txtTituloTrabalho.Text);
-                        autor.nomeAutor = txtNomeAutor.Text;
-                        autor.nomesMeioAutor = txtNomeMeioAutor.Text;
-                        autor.sobrenomeAutor = txtSobrenomeAutor.Text;
+                        autor.nomeAutor = txtNomeAutor.Text.ToUpper();
+                        autor.nomesMeioAutor = txtNomeMeioAutor.Text.ToUpper();
+                        autor.sobrenomeAutor = txtSobrenomeAutor.Text.ToUpper();
                         controle.atualizar();
                     }
                 }
@@ -817,7 +982,7 @@ namespace InscricaoCongresso.View
             //verifica se já existe valor de endereço associado ao usuário
             if (novoEndereco && (controle.pesquisaIdEndereco(txtEndereco.Text, txtNumeral.Text)) == null)
             {
-                //Inicio da rotina de tentativa de captura de endereço
+                //Inicio da rotina de captura de endereço
                 try
                 {
 
@@ -844,10 +1009,10 @@ namespace InscricaoCongresso.View
                         {
                             controle.adicionarEndereco(endereco);
                             endereco.idLogradouro = 7;
-                            endereco.nomeEndereco = txtEndereco.Text + ", " + txtCidade.Text;
+                            endereco.nomeEndereco = (txtEndereco.Text + ", " + txtCidade.Text).ToUpper();
                             endereco.numeroEndereco = txtNumeral.Text;
-                            endereco.complemento = txtComplemento.Text;
-                            endereco.bairro = txtBairro.Text;
+                            endereco.complemento = txtComplemento.Text.ToUpper();
+                            endereco.bairro = txtBairro.Text.ToUpper();
                             endereco.idPaises = ddlPaises.SelectedIndex;
                             endereco.idCidade = 1;
                             endereco.cep = txtCEP.Text;
@@ -860,12 +1025,12 @@ namespace InscricaoCongresso.View
 
                         controle.adicionarEndereco(endereco);
                         endereco.idLogradouro = ddlLogradouro.SelectedIndex;
-                        endereco.nomeEndereco = txtEndereco.Text;
+                        endereco.nomeEndereco = txtEndereco.Text.ToUpper();
                         endereco.numeroEndereco = txtNumeral.Text;
-                        endereco.complemento = txtComplemento.Text;
-                        endereco.bairro = txtBairro.Text;
+                        endereco.complemento = txtComplemento.Text.ToUpper();
+                        endereco.bairro = txtBairro.Text.ToUpper();
                         endereco.idPaises = 1;
-                        endereco.idCidade = ddlCidade.SelectedIndex;
+                        endereco.idCidade = ddlCidade.SelectedIndex + 1;
                         endereco.cep = txtCEP.Text;
                         if (ddlCidade.SelectedIndex == 0)
                         {
@@ -919,10 +1084,11 @@ namespace InscricaoCongresso.View
                 inscricao.cpf = txtCPF.Text;
                 inscricao.rg_rne = txtRG.Text;
                 inscricao.nacionalidade = txtNacional.Text;
-                inscricao.areaProfissional = txtArea.Text;
-                inscricao.infoProfissional = txtLocal.Text;
-                inscricao.situacaoAcademica = txtSituacao.Text;
-                if (chkTrabalho.Checked) {
+                inscricao.areaProfissional = txtArea.Text.ToUpper();
+                inscricao.infoProfissional = txtLocal.Text.ToUpper();
+                inscricao.situacaoAcademica = txtSituacao.Text.ToUpper();
+                if (chkTrabalho.Checked)
+                {
                     inscricao.palestrante = true;
                 }
                 else
@@ -933,32 +1099,10 @@ namespace InscricaoCongresso.View
                 inscricao.telefone1 = txtTelefone1.Text;
                 inscricao.telefone2 = txtTelefone2.Text;
                 inscricao.celular = txtCelular.Text;
-
-                if (txtNascimento.Text != "" && txtNome.Text != "" && txtCPF.Text != "" && txtRG.Text != "" && txtNacional.Text != "" &&
-                    txtArea.Text != "" && txtLocal.Text != "" && txtSituacao.Text != "" && txtEmail.Text != "" && txtTelefone1.Text != ""
-                    && txtTelefone2.Text != "" && txtCelular.Text != "")
-                {
-                    inscricao.dataNascimento = Convert.ToDateTime(txtNascimento.Text);
-                    controle.atualizar();
-                    gerarBoleto();
-                }
-                else
-                {
-                    string alertMessage3 = "";
-                    if (idioma.Equals("BR"))
-                    {
-                        alertMessage3 = "Todos os dados são obrigatórios";
-                    }
-                    else if (idioma.Equals("ES"))
-                    {
-                        alertMessage3 = "Se requiere todos los datos";
-                    }
-                    else if (idioma.Equals("EN"))
-                    {
-                        alertMessage3 = "All data is mandatory";
-                    }
-                    ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage3 + "')", true);
-                }
+                
+                inscricao.dataNascimento = Convert.ToDateTime(txtNascimento.Text);
+                controle.atualizar();
+                gerarBoleto();
 
             }
             catch
@@ -1028,8 +1172,7 @@ namespace InscricaoCongresso.View
                 if (txtCPF.Text.Length != 11 || txtCPF.Text.Where(c => !char.IsNumber(c)).Count() > 0)
                 {
                     txtCPF.Text = "";
-                    alertMessage = "CPF com formato inválido, este campo deve conter somente números e possuir 11 caracteres." 
-                        +" Se não possuir CPF selecione outro idioma e preencha este campo com o número do passaporte.";
+                    alertMessage = "CPF com formato inválido, este campo deve conter somente números e possuir 11 caracteres.";
                     ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage + "')", true);
                 }
                 //passando pelas condições anteriores é efetuado o teste do digito verificador para CPF
@@ -1119,6 +1262,7 @@ namespace InscricaoCongresso.View
         {
             if(txtNacional.Text.Length < 3)
             {
+                txtNacional.Text = "";
                 string alertMessage1 = "";
                 if (idioma.Equals("BR"))
                 {
@@ -1133,6 +1277,82 @@ namespace InscricaoCongresso.View
                     alertMessage1 = "The nationality field must have at least the abbreviation of the country of origin with 3 characters";
                 }
                 ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage1 + "')", true);
+            }
+            else
+            {
+                txtNacional.Text = txtNacional.Text.ToUpper();
+            }
+        }
+
+        protected void txtCEP_TextChanged(object sender, EventArgs e)
+        {
+            //remove do valor digitado qualque espaço, . ou - 
+            string[] aux = txtCEP.Text.Split('.', '-', ' ');
+            txtCEP.Text = "";
+            foreach (string value in aux)
+            {
+                txtCEP.Text = txtCEP.Text + value;
+            }
+
+            string alertMessage = "";
+
+            //valida primeiramente se o usuário é residente no Brasil
+            if (ddlPaises.SelectedIndex==1)
+            {
+                //Valida se o campo CEP possuí 8 digitos, e se não possuí letras
+                if (txtCEP.Text.Length != 8 || txtCEP.Text.Where(c => !char.IsNumber(c)).Count() > 0)
+                {
+                    txtCEP.Text = "";
+                    alertMessage = "CEP inválido, este campo deve conter somente números e possuir 8 caracteres.";
+                    ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage + "')", true);
+                }
+            }
+            //Para estrangeiros ou residentes fora do país o campo 
+        }
+
+        protected void txtEmail_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void txtTelefone1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void txtTelefone2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void txtCelular_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void txtRG_TextChanged(object sender, EventArgs e)
+        {
+            if (txtRG.Text.Length < 9)
+            {
+                txtRG.Text = "";
+                string alertMessage = "";
+                if (idioma.Equals("BR"))
+                {
+                    alertMessage = "O campo RG/RNE deve possuir no minimo 9 caracteres, se necessário complete com zeros";
+                }
+                else if (idioma.Equals("ES"))
+                {
+                    alertMessage = "El campo identidad debe tener al menos 9 caracteres, si completa necesaria con ceros ";
+                }
+                else if (idioma.Equals("EN"))
+                {
+                    alertMessage = "The ID field must have at least 9 characters, if necessary complete with zeros";
+                }
+                ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage + "')", true);
+            }
+            else
+            {
+                txtRG.Text = txtRG.Text.ToUpper();
             }
         }
 
@@ -1159,8 +1379,11 @@ namespace InscricaoCongresso.View
         }
 
         protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)
-        {           
-            if(ddlEstado.SelectedIndex == 0)
+        {
+            //limpa a drop down list de cidades
+            ddlCidade.Items.Clear();
+
+            if (ddlEstado.SelectedIndex == 0)
             {
                 string alertMessage1 = "";
                 if (idioma.Equals("BR"))
@@ -1176,12 +1399,42 @@ namespace InscricaoCongresso.View
                     alertMessage1 = "Selecting an item is required";
                 }
                 ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + alertMessage1 + "')", true);
+                ddlCidade.Items.Clear();
                 ddlCidade.Enabled = false;
             }
+            //valida se houve alteração na drop down list de estado
             else
             {
+                //se houve seleção de estado habilita a seleção de cidade
                 ddlCidade.Enabled = true;
+                //pesquisa pelas cidades cadastradas na base de dados compativeis com o estado selecionado
+                cidades = controle.pesquisaCidades(ddlEstado.SelectedIndex + 1);
+
+                //reinicia o contador do indice
+                //count = 1;
+
+
+                //adiciona o primeiro item estático ao indice na posição 0
+                ddlCidade.TabIndex.Equals(0);
+                ddlCidade.Items.Add("-------");
+                //interação condicionada a quantidade de elementos retornados na pesquisa anterior
+                foreach (CIDADES value in cidades)
+                {
+                    //exclui da lista o padrão para estrangeiros
+                    if (value.id != 1)
+                    {
+                        // atribui o indice do elemento e o valor do objeto como sendo o nome da cidade
+                        //ddlCidade.TabIndex.Equals(count);
+
+                        ddlCidade.Items.Add(value.nomeCidade);
+
+                        //incrementa o indice
+                        //count++;
+                    }
+                }
             }
+
         }
+
     }
 }
